@@ -11,6 +11,7 @@
 		B45AE30B27504819006BCD00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE30A27504819006BCD00 /* ContentView.swift */; };
 		B45AE30D2750481B006BCD00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30C2750481B006BCD00 /* Assets.xcassets */; };
 		B45AE3102750481B006BCD00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30F2750481B006BCD00 /* Preview Assets.xcassets */; };
+		B45AE3182750493B006BCD00 /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE3172750493B006BCD00 /* AppStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		B45AE30C2750481B006BCD00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B45AE30F2750481B006BCD00 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B45AE3112750481B006BCD00 /* DrProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrProxy.entitlements; sourceTree = "<group>"; };
+		B45AE3172750493B006BCD00 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,10 +54,11 @@
 		B45AE30727504819006BCD00 /* DrProxy */ = {
 			isa = PBXGroup;
 			children = (
-				B45AE30827504819006BCD00 /* DrProxyApp.swift */,
-				B45AE30A27504819006BCD00 /* ContentView.swift */,
+				B45AE3172750493B006BCD00 /* AppStorage.swift */,
 				B45AE30C2750481B006BCD00 /* Assets.xcassets */,
+				B45AE30A27504819006BCD00 /* ContentView.swift */,
 				B45AE3112750481B006BCD00 /* DrProxy.entitlements */,
+				B45AE30827504819006BCD00 /* DrProxyApp.swift */,
 				B45AE30E2750481B006BCD00 /* Preview Content */,
 			);
 			path = DrProxy;
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B45AE3182750493B006BCD00 /* AppStorage.swift in Sources */,
 				B45AE30B27504819006BCD00 /* ContentView.swift in Sources */,
 				B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */,
 			);

@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage(AppStorage.configPathKey) var configPath: String = AppStorage.configPathDefault
+    @AppStorage(AppStorage.jobNameKey) var jobName: String = AppStorage.jobNameDefault
+
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack {
+            Text(configPath)
+            Text(jobName)
+        }.padding()
     }
 }
 
