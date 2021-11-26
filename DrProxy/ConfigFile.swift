@@ -17,15 +17,15 @@ struct ConfigFile {
 
         enum Content {
             case comment(text: String)
-            case option(name: String, value: String)
+            case option(name: String, space: String, value: String)
         }
 
         static func comment(text: String) -> Line {
             Line(id: UUID(), content: .comment(text: text))
         }
 
-        static func option(name: String, value: String) -> Line {
-            Line(id: UUID(), content: .option(name: name, value: value))
+        static func option(name: String, space: String, value: String) -> Line {
+            Line(id: UUID(), content: .option(name: name, space: space, value: value))
         }
 
         var isOption: Bool {
@@ -42,7 +42,7 @@ struct ConfigFile {
     }
 
     init(string: String) throws {
-        let regex = try! NSRegularExpression(pattern: #"^(\w+)\s+(.+)$"#, options: [])
+        let regex = try! NSRegularExpression(pattern: #"^(\w+)(\s+)(.+)$"#, options: [])
         var lines = [Line]()
         string.enumerateLines(invoking: { line, _ in
             let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -50,8 +50,9 @@ struct ConfigFile {
                 lines.append(.comment(text: line))
             } else if let match = regex.firstMatch(in: trimmed, options: [], range: NSRange(location: 0, length: trimmed.count)) {
                 let name = String(trimmed[Range(match.range(at: 1), in: trimmed)!])
-                let value = String(trimmed[Range(match.range(at: 2), in: trimmed)!])
-                lines.append(Line.option(name: name, value: value))
+                let space = String(trimmed[Range(match.range(at: 2), in: trimmed)!])
+                let value = String(trimmed[Range(match.range(at: 3), in: trimmed)!])
+                lines.append(Line.option(name: name, space: space, value: value))
             } else {
                 lines.append(.comment(text: line))
             }
@@ -92,7 +93,7 @@ struct ConfigFile {
     subscript(name: String) -> String {
         get {
             for line in lines {
-                if case let .option(name: n, value: value) = line.content, n == name {
+                if case let .option(name: n, space: _, value: value) = line.content, n == name {
                     return value
                 }
             }
@@ -100,18 +101,20 @@ struct ConfigFile {
         }
         set {
             var index: Int? = nil
+            var space: String? = nil
             for i in lines.indices {
-                if case .option(name: name, value: _) = lines[i].content {
+                if case let .option(name: n, space: s, value: _) = lines[i].content, n == name {
                     index = i
+                    space = s
                     break
                 }
             }
             if let index = index {
                 var updated = lines[index]
-                updated.content = .option(name: name, value: newValue)
+                updated.content = .option(name: name, space: space ?? "\n", value: newValue)
                 lines[index] = updated
             } else {
-                lines.append(.option(name: name, value: newValue))
+                lines.append(.option(name: name, space: "\t", value: newValue))
             }
         }
     }
@@ -122,8 +125,8 @@ struct ConfigFile {
             switch line.content {
             case let .comment(text: text):
                 result.append(text)
-            case let .option(name: name, value: value):
-                result.append("\(name)\t\(value)")
+            case let .option(name: name, space: space, value: value):
+                result.append("\(name)\(space)\(value)")
             }
         }
         return result.joined(separator: "\n")
