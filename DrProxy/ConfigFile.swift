@@ -90,6 +90,21 @@ struct ConfigFile {
         set { self["Proxy"] = newValue }
     }
 
+    var noProxy: String {
+        get { self["NoProxy"] }
+        set { self["NoProxy"] = newValue }
+    }
+
+    var listen: String {
+        get { self["Listen"] }
+        set { self["Listen"] = newValue }
+    }
+
+    var gateway: String {
+        get { self["Gateway"] }
+        set { self["Gateway"] = newValue }
+    }
+
     subscript(name: String) -> String {
         get {
             for line in lines {

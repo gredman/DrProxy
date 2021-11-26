@@ -37,6 +37,12 @@ struct ContentView: View {
                 }.disabled(true)
                 Button("Change…", action: changePassword)
             }
+            Section(header: Text("Proxy")) {
+                TextField("Upstream", text: $file.proxy)
+                TextField("NoProxy", text: $file.noProxy)
+                TextField("Port", text: $file.listen)
+                TextField("Gateway", text: $file.gateway)
+            }
             Section {
                 Button("Save", action: save)
             }
