@@ -59,32 +59,6 @@ struct ConfigFile {
         self.lines = lines
     }
 
-//    mutating func option(name: String) -> Binding<String?> {
-//        Binding {
-//            for line in lines {
-//                if case let .option(name: name, value: value) = line.content {
-//                    return value
-//                }
-//            }
-//            return nil
-//        } set: { newValue in
-//            var index: Int?
-//            for i in lines.indices {
-//                if case let .option(name: name, value: value) = lines[i].content {
-//                    index = i
-//                    break
-//                }
-//            }
-//            if let index = index {
-//                var updated = lines[index]
-//                updated.content = .option(name: name, value: newValue!)
-//                lines[index] = updated
-//            } else {
-//                lines.append(.option(name: name, value: newValue!))
-//            }
-//        }
-//    }
-
     var username: String {
         get { self["Username"] }
         set { self["Username"] = newValue }
@@ -140,5 +114,18 @@ struct ConfigFile {
                 lines.append(.option(name: name, value: newValue))
             }
         }
+    }
+
+    var string: String {
+        var result: [String] = []
+        for line in lines {
+            switch line.content {
+            case let .comment(text: text):
+                result.append(text)
+            case let .option(name: name, value: value):
+                result.append("\(name)\t\(value)")
+            }
+        }
+        return result.joined(separator: "\n")
     }
 }

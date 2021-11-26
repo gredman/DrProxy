@@ -37,6 +37,9 @@ struct ContentView: View {
                 }.disabled(true)
                 Button("Change…", action: changePassword)
             }
+            Section {
+                Button("Save", action: save)
+            }
         }
         .padding()
         .sheet(item: $modal, content: { modal in
@@ -56,7 +59,8 @@ struct ContentView: View {
 
     private func load() async throws {
         let content = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<String, Error>) in
-            NSXPCConnection.fileService.readFile(path: configPath) { error, content in
+            let url = URL(fileURLWithPath: configPath)
+            NSXPCConnection.fileService.readFile(url: url) { error, content in
                 if let error = error {
                     cont.resume(throwing: error)
                 } else if let content = content {
@@ -67,6 +71,29 @@ struct ContentView: View {
             }
         }
         file = try ConfigFile(string: content)
+    }
+
+    private func save() {
+        Task {
+            do {
+                try await save()
+            } catch {
+                print("error \(error)")
+            }
+        }
+    }
+
+    private func save() async throws {
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let url = URL(fileURLWithPath: configPath)
+            NSXPCConnection.fileService.writeFile(url: url, content: file.string) { error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else {
+                    cont.resume(returning: ())
+                }
+            }
+        }
     }
 
     private func changePassword() {

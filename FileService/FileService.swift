@@ -9,12 +9,12 @@ import Foundation
 import ServiceManagement
 
 @objc public protocol FileServiceProtocol {
-    func readFile(path: String, withReply reply: @escaping (NSError?, String?) -> Void)
+    func readFile(url: URL, withReply reply: @escaping (NSError?, String?) -> Void)
+    func writeFile(url: URL, content: String, withReply reply: @escaping (NSError?) -> Void)
 }
 
 class FileService: NSObject, FileServiceProtocol {
-    func readFile(path: String, withReply reply: @escaping (NSError?, String?) -> Void) {
-        let url = URL(fileURLWithPath: path)
+    func readFile(url: URL, withReply reply: @escaping (NSError?, String?) -> Void) {
         let string: String
         do {
             string = try String(contentsOf: url)
@@ -23,5 +23,14 @@ class FileService: NSObject, FileServiceProtocol {
             return
         }
         reply(nil, string)
+    }
+
+    func writeFile(url: URL, content: String, withReply reply: @escaping (NSError?) -> Void) {
+        do {
+            try content.write(to: url, atomically: true, encoding: .utf8)
+            reply(nil)
+        } catch {
+            reply(error as NSError)
+        }
     }
 }
