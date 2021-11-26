@@ -46,19 +46,30 @@ struct ContentView: View {
             }
         })
         .task {
-            let content = await withCheckedContinuation { cont in
-                NSXPCConnection.fileService.readFile(path: configPath, withReply: cont.resume(returning:))
-            }
-
             do {
-                file = try content.map(ConfigFile.init(string:)) ?? file
+                try await load()
             } catch {
                 print("error \(error)")
             }
         }
     }
 
-    func changePassword() {
+    private func load() async throws {
+        let content = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<String, Error>) in
+            NSXPCConnection.fileService.readFile(path: configPath) { error, content in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else if let content = content {
+                    cont.resume(returning: content)
+                } else {
+                    fatalError()
+                }
+            }
+        }
+        file = try ConfigFile(string: content)
+    }
+
+    private func changePassword() {
         modal = .changePassword
     }
 }
