@@ -27,27 +27,29 @@ struct ContentView: View {
     var body: some View {
         Form {
             Section(header: Text("Credentials")) {
-                Group {
-                    TextField("Username", text: $file.username)
-                    TextField("Domain", text: $file.domain)
-                    SecureField("Password", text: $password)
-                    TextField("PassLM", text: $file.passLM)
-                    TextField("PassNT", text: $file.passNT)
-                    TextField("PassNTLMv2", text: $file.passNTLMv2)
-                }.disabled(true)
-                Button("Change…", action: changePassword)
+                TextField("Username", text: $file.username).disabled(true)
+                TextField("Domain", text: $file.domain).disabled(true)
+                HStack {
+                    SecureField("Password", text: $password).disabled(true)
+                    Button("Change…", action: changePassword)
+                }
             }
             Section(header: Text("Proxy")) {
                 TextField("Upstream", text: $file.proxy)
-                TextField("NoProxy", text: $file.noProxy)
+                TextField("Bypass", text: $file.noProxy)
                 TextField("Port", text: $file.listen)
                 TextField("Gateway", text: $file.gateway)
             }
             Section {
-                Button("Save", action: save)
+                HStack {
+                    Spacer()
+                    Button("Save", action: save)
+                        .buttonStyle(.borderedProminent)
+                }
             }
         }
         .padding()
+        .frame(minHeight: 200)
         .sheet(item: $modal, content: { modal in
             switch modal {
             case .changePassword:

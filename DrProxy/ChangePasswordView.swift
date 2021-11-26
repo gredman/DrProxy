@@ -27,11 +27,12 @@ struct ChangePasswordView: View {
             TextField("Username", text: $username, prompt: Text("dale_cooper"))
             SecureField("Password", text: $password, prompt: Text("password01"))
             HStack {
-                Button("Cancel", action: cancel)
-                Button("Update", action: updatePassword)
+                Button("Cancel", role: .cancel, action: cancel)
+                Button("Done", action: updatePassword)
                     .environment(\.isEnabled, isValid)
             }
         }
+        .onSubmit(updatePassword)
         .onAppear(perform: {
             self.domain = configFile.domain.wrappedValue
             self.username = configFile.username.wrappedValue
@@ -53,6 +54,7 @@ struct ChangePasswordView: View {
     }
 
     private func updatePassword() {
+        guard isValid else { return     }
         Task {
             do {
                 try await updatePassword()
