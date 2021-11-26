@@ -14,6 +14,8 @@ import ServiceManagement
 
 class FileService: NSObject, FileServiceProtocol {
     func readFile(path: String, withReply reply: @escaping (String?) -> Void) {
-        reply("ok!")
+        let url = URL(fileURLWithPath: path)
+        let string = try? String(contentsOf: url)
+        reply(string)
     }
 }
