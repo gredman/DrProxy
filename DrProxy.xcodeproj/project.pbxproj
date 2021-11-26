@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B41BCAFC2750628A001A69CD /* ConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCAFB2750628A001A69CD /* ConfigFile.swift */; };
+		B41BCAFE27506E1C001A69CD /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */; };
+		B41BCB0E275072F7001A69CD /* HashService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = B41BCB03275072F7001A69CD /* HashService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B41BCB1627507470001A69CD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB1227507302001A69CD /* main.swift */; };
+		B41BCB1727507474001A69CD /* HashService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB1327507302001A69CD /* HashService.swift */; };
 		B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE30827504819006BCD00 /* DrProxyApp.swift */; };
 		B45AE30B27504819006BCD00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE30A27504819006BCD00 /* ContentView.swift */; };
 		B45AE30D2750481B006BCD00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30C2750481B006BCD00 /* Assets.xcassets */; };
@@ -18,6 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B41BCB0C275072F7001A69CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B45AE2FD27504819006BCD00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B41BCB02275072F7001A69CD;
+			remoteInfo = HashService;
+		};
 		B45AE32627504D2F006BCD00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B45AE2FD27504819006BCD00 /* Project object */;
@@ -35,6 +47,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				B45AE32827504D2F006BCD00 /* FileService.xpc in Embed XPC Services */,
+				B41BCB0E275072F7001A69CD /* HashService.xpc in Embed XPC Services */,
 			);
 			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +65,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B41BCAFB2750628A001A69CD /* ConfigFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFile.swift; sourceTree = "<group>"; };
+		B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		B41BCB03275072F7001A69CD /* HashService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = HashService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		B41BCB0B275072F7001A69CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B41BCB1227507302001A69CD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B41BCB1327507302001A69CD /* HashService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashService.swift; sourceTree = "<group>"; };
 		B45AE30527504819006BCD00 /* Dr. Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dr. Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45AE30827504819006BCD00 /* DrProxyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrProxyApp.swift; sourceTree = "<group>"; };
 		B45AE30A27504819006BCD00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +85,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B41BCB00275072F7001A69CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B45AE30227504819006BCD00 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -83,11 +109,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B41BCB04275072F7001A69CD /* HashService */ = {
+			isa = PBXGroup;
+			children = (
+				B41BCB1327507302001A69CD /* HashService.swift */,
+				B41BCB0B275072F7001A69CD /* Info.plist */,
+				B41BCB1227507302001A69CD /* main.swift */,
+			);
+			path = HashService;
+			sourceTree = "<group>";
+		};
 		B45AE2FC27504819006BCD00 = {
 			isa = PBXGroup;
 			children = (
 				B45AE30727504819006BCD00 /* DrProxy */,
 				B45AE31E27504D2F006BCD00 /* FileService */,
+				B41BCB04275072F7001A69CD /* HashService */,
 				B45AE30627504819006BCD00 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,6 +134,7 @@
 			children = (
 				B45AE30527504819006BCD00 /* Dr. Proxy.app */,
 				B45AE31D27504D2F006BCD00 /* FileService.xpc */,
+				B41BCB03275072F7001A69CD /* HashService.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,6 +144,8 @@
 			children = (
 				B45AE3172750493B006BCD00 /* AppStorage.swift */,
 				B45AE30C2750481B006BCD00 /* Assets.xcassets */,
+				B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */,
+				B41BCAFB2750628A001A69CD /* ConfigFile.swift */,
 				B45AE30A27504819006BCD00 /* ContentView.swift */,
 				B45AE3112750481B006BCD00 /* DrProxy.entitlements */,
 				B45AE30827504819006BCD00 /* DrProxyApp.swift */,
@@ -135,6 +175,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B41BCB02275072F7001A69CD /* HashService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B41BCB0F275072F7001A69CD /* Build configuration list for PBXNativeTarget "HashService" */;
+			buildPhases = (
+				B41BCAFF275072F7001A69CD /* Sources */,
+				B41BCB00275072F7001A69CD /* Frameworks */,
+				B41BCB01275072F7001A69CD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HashService;
+			productName = HashService;
+			productReference = B41BCB03275072F7001A69CD /* HashService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
+		};
 		B45AE30427504819006BCD00 /* DrProxy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B45AE3142750481B006BCD00 /* Build configuration list for PBXNativeTarget "DrProxy" */;
@@ -149,6 +206,7 @@
 			);
 			dependencies = (
 				B45AE32727504D2F006BCD00 /* PBXTargetDependency */,
+				B41BCB0D275072F7001A69CD /* PBXTargetDependency */,
 			);
 			name = DrProxy;
 			productName = DrProxy;
@@ -182,6 +240,10 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					B41BCB02275072F7001A69CD = {
+						CreatedOnToolsVersion = 13.2;
+						LastSwiftMigration = 1320;
+					};
 					B45AE30427504819006BCD00 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -205,11 +267,19 @@
 			targets = (
 				B45AE30427504819006BCD00 /* DrProxy */,
 				B45AE31C27504D2F006BCD00 /* FileService */,
+				B41BCB02275072F7001A69CD /* HashService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B41BCB01275072F7001A69CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B45AE30327504819006BCD00 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -229,11 +299,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B41BCAFF275072F7001A69CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B41BCB1627507470001A69CD /* main.swift in Sources */,
+				B41BCB1727507474001A69CD /* HashService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B45AE30127504819006BCD00 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				B45AE3182750493B006BCD00 /* AppStorage.swift in Sources */,
+				B41BCAFC2750628A001A69CD /* ConfigFile.swift in Sources */,
+				B41BCAFE27506E1C001A69CD /* ChangePasswordView.swift in Sources */,
 				B45AE30B27504819006BCD00 /* ContentView.swift in Sources */,
 				B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */,
 			);
@@ -251,6 +332,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B41BCB0D275072F7001A69CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B41BCB02275072F7001A69CD /* HashService */;
+			targetProxy = B41BCB0C275072F7001A69CD /* PBXContainerItemProxy */;
+		};
 		B45AE32727504D2F006BCD00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B45AE31C27504D2F006BCD00 /* FileService */;
@@ -259,6 +345,59 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		B41BCB10275072F7001A69CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HashService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HashService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.HashService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B41BCB11275072F7001A69CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HashService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HashService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.HashService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
 		B45AE3122750481B006BCD00 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -317,6 +456,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -371,6 +511,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -399,7 +540,6 @@
 				PRODUCT_MODULE_NAME = DrProxy;
 				PRODUCT_NAME = "Dr. Proxy";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -428,7 +568,6 @@
 				PRODUCT_MODULE_NAME = DrProxy;
 				PRODUCT_NAME = "Dr. Proxy";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -449,7 +588,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -470,13 +608,21 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B41BCB0F275072F7001A69CD /* Build configuration list for PBXNativeTarget "HashService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B41BCB10275072F7001A69CD /* Debug */,
+				B41BCB11275072F7001A69CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B45AE30027504819006BCD00 /* Build configuration list for PBXProject "DrProxy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -40,7 +40,7 @@ struct ContentView: View {
                 Group {
                     TextField("Username", text: $file.username)
                     TextField("Domain", text: $file.domain)
-                    TextField("Password", text: $password)
+                    SecureField("Password", text: $password)
                 }.disabled(true)
                 Button("Change…", action: changePassword)
             }
