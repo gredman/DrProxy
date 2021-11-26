@@ -12,7 +12,44 @@
 		B45AE30D2750481B006BCD00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30C2750481B006BCD00 /* Assets.xcassets */; };
 		B45AE3102750481B006BCD00 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30F2750481B006BCD00 /* Preview Assets.xcassets */; };
 		B45AE3182750493B006BCD00 /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE3172750493B006BCD00 /* AppStorage.swift */; };
+		B45AE32827504D2F006BCD00 /* FileService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = B45AE31D27504D2F006BCD00 /* FileService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B45AE32F27504D68006BCD00 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32E27504D68006BCD00 /* FileService.swift */; };
+		B45AE33027504D68006BCD00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32D27504D68006BCD00 /* main.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B45AE32627504D2F006BCD00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B45AE2FD27504819006BCD00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B45AE31C27504D2F006BCD00;
+			remoteInfo = FileService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B45AE32C27504D2F006BCD00 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				B45AE32827504D2F006BCD00 /* FileService.xpc in Embed XPC Services */,
+			);
+			name = "Embed XPC Services";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B45AE34127504DEC006BCD00 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B45AE30527504819006BCD00 /* Dr. Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dr. Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,10 +59,21 @@
 		B45AE30F2750481B006BCD00 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B45AE3112750481B006BCD00 /* DrProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrProxy.entitlements; sourceTree = "<group>"; };
 		B45AE3172750493B006BCD00 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
+		B45AE31D27504D2F006BCD00 /* FileService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = FileService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		B45AE32527504D2F006BCD00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B45AE32D27504D68006BCD00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B45AE32E27504D68006BCD00 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B45AE30227504819006BCD00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B45AE31A27504D2F006BCD00 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				B45AE30727504819006BCD00 /* DrProxy */,
+				B45AE31E27504D2F006BCD00 /* FileService */,
 				B45AE30627504819006BCD00 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				B45AE30527504819006BCD00 /* Dr. Proxy.app */,
+				B45AE31D27504D2F006BCD00 /* FileService.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +122,16 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B45AE31E27504D2F006BCD00 /* FileService */ = {
+			isa = PBXGroup;
+			children = (
+				B45AE32D27504D68006BCD00 /* main.swift */,
+				B45AE32E27504D68006BCD00 /* FileService.swift */,
+				B45AE32527504D2F006BCD00 /* Info.plist */,
+			);
+			path = FileService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -82,15 +142,35 @@
 				B45AE30127504819006BCD00 /* Sources */,
 				B45AE30227504819006BCD00 /* Frameworks */,
 				B45AE30327504819006BCD00 /* Resources */,
+				B45AE32C27504D2F006BCD00 /* Embed XPC Services */,
+				B45AE34127504DEC006BCD00 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B45AE32727504D2F006BCD00 /* PBXTargetDependency */,
 			);
 			name = DrProxy;
 			productName = DrProxy;
 			productReference = B45AE30527504819006BCD00 /* Dr. Proxy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B45AE31C27504D2F006BCD00 /* FileService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B45AE32927504D2F006BCD00 /* Build configuration list for PBXNativeTarget "FileService" */;
+			buildPhases = (
+				B45AE31927504D2F006BCD00 /* Sources */,
+				B45AE31A27504D2F006BCD00 /* Frameworks */,
+				B45AE31B27504D2F006BCD00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FileService;
+			productName = FileService;
+			productReference = B45AE31D27504D2F006BCD00 /* FileService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
 		};
 /* End PBXNativeTarget section */
 
@@ -103,6 +183,9 @@
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					B45AE30427504819006BCD00 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					B45AE31C27504D2F006BCD00 = {
 						CreatedOnToolsVersion = 13.1;
 					};
 				};
@@ -121,6 +204,7 @@
 			projectRoot = "";
 			targets = (
 				B45AE30427504819006BCD00 /* DrProxy */,
+				B45AE31C27504D2F006BCD00 /* FileService */,
 			);
 		};
 /* End PBXProject section */
@@ -132,6 +216,13 @@
 			files = (
 				B45AE3102750481B006BCD00 /* Preview Assets.xcassets in Resources */,
 				B45AE30D2750481B006BCD00 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B45AE31B27504D2F006BCD00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +239,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B45AE31927504D2F006BCD00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B45AE33027504D68006BCD00 /* main.swift in Sources */,
+				B45AE32F27504D68006BCD00 /* FileService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B45AE32727504D2F006BCD00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B45AE31C27504D2F006BCD00 /* FileService */;
+			targetProxy = B45AE32627504D2F006BCD00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B45AE3122750481B006BCD00 /* Debug */ = {
@@ -269,6 +377,7 @@
 		B45AE3152750481B006BCD00 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DrProxy/DrProxy.entitlements;
@@ -297,6 +406,7 @@
 		B45AE3162750481B006BCD00 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DrProxy/DrProxy.entitlements;
@@ -322,6 +432,48 @@
 			};
 			name = Release;
 		};
+		B45AE32A27504D2F006BCD00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FileService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FileService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.FileService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B45AE32B27504D2F006BCD00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FileService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FileService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.FileService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -339,6 +491,15 @@
 			buildConfigurations = (
 				B45AE3152750481B006BCD00 /* Debug */,
 				B45AE3162750481B006BCD00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B45AE32927504D2F006BCD00 /* Build configuration list for PBXNativeTarget "FileService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B45AE32A27504D2F006BCD00 /* Debug */,
+				B45AE32B27504D2F006BCD00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
