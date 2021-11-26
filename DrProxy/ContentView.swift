@@ -9,16 +9,6 @@ import SwiftUI
 
 import FileService
 
-public extension FileServiceProtocol {
-    func readFile(path: String) async -> String? {
-        await withCheckedContinuation { continuation in
-            readFile(path: path) { reply in
-                continuation.resume(returning: reply)
-            }
-        }
-    }
-}
-
 struct ContentView: View {
     enum Modal: Identifiable {
         case changePassword
@@ -41,6 +31,9 @@ struct ContentView: View {
                     TextField("Username", text: $file.username)
                     TextField("Domain", text: $file.domain)
                     SecureField("Password", text: $password)
+                    TextField("PassLM", text: $file.passLM)
+                    TextField("PassNT", text: $file.passNT)
+                    TextField("PassNTLMv2", text: $file.passNTLMv2)
                 }.disabled(true)
                 Button("Change…", action: changePassword)
             }
@@ -53,14 +46,10 @@ struct ContentView: View {
             }
         })
         .task {
-            let connection = NSXPCConnection(serviceName: "computer.gareth.DrProxy.FileService")
-            connection.remoteObjectInterface = NSXPCInterface(with: FileServiceProtocol.self)
-            connection.resume()
+            let content = await withCheckedContinuation { cont in
+                NSXPCConnection.fileService.readFile(path: configPath, withReply: cont.resume(returning:))
+            }
 
-            let service = connection.remoteObjectProxyWithErrorHandler({ error in
-                print("remote proxy error: \(error)")
-            }) as! FileServiceProtocol
-            let content = await service.readFile(path: configPath)
             do {
                 file = try content.map(ConfigFile.init(string:)) ?? file
             } catch {
