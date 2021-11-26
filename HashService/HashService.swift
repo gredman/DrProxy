@@ -20,6 +20,7 @@ private let path = "/usr/local/bin"
 class HashService: NSObject, HashServiceProtocol {
     func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (NSError?, PasswordHash?) -> Void) {
         let process = Process()
+        let stdin = Pipe()
         let stdout = Pipe()
         let stderr = Pipe()
         process.executableURL = URL(fileURLWithPath: "/bin/sh")
@@ -30,17 +31,20 @@ class HashService: NSObject, HashServiceProtocol {
             environment[pathKey] = path
         }
         process.environment = environment
-        // TODO: type in password to avoid shell escapes
-        process.arguments = ["-c", "cntlm -H -d '\(domain)' -u '\(username)' -p \(password)"]
+        process.arguments = ["-c", "cntlm -H -d '\(domain)' -u '\(username)'"]
+        process.standardInput = stdin
         process.standardOutput = stdout
         process.standardError = stderr
         var data: Data?
         do {
             try process.run()
+            try stdin.fileHandleForWriting.write(contentsOf: password.data(using: .utf8)!)
+            try stdin.fileHandleForWriting.close()
             process.waitUntilExit()
             data = try stdout.fileHandleForReading.readToEnd()
         } catch {
             reply(error as NSError, nil)
+            return
         }
 
         guard process.terminationStatus == 0, let data = data, let string = String(data: data, encoding: .utf8) else {
