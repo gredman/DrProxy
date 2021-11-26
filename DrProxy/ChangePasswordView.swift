@@ -18,6 +18,9 @@ struct ChangePasswordView: View {
     @State private var username = ""
     @State private var password = ""
 
+    @State private var hasError = false
+    @State private var error: Error?
+
     var body: some View {
         VStack {
             TextField("Domain", text: $domain, prompt: Text("network"))
@@ -33,6 +36,11 @@ struct ChangePasswordView: View {
             self.domain = configFile.domain.wrappedValue
             self.username = configFile.username.wrappedValue
         })
+        .alert(error?.localizedDescription ?? "Error", isPresented: $hasError, actions: {}, message: {
+            if let error = error {
+                ErrorView(error: error)
+            }
+        })
         .padding()
     }
 
@@ -46,15 +54,26 @@ struct ChangePasswordView: View {
 
     private func updatePassword() {
         Task {
-            await updatePassword()
+            do {
+                try await updatePassword()
+            } catch {
+                self.hasError = true
+                self.error = error
+            }
         }
     }
 
-    private func updatePassword() async {
-        guard let hash = await withCheckedContinuation({ cont in
-            NSXPCConnection.hashService.computeHash(domain: domain, username: username, password: password, withReply: cont.resume(returning:))
-        }) else {
-            return
+    private func updatePassword() async throws {
+        let hash = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<PasswordHash, Error>) in
+            NSXPCConnection.hashService.computeHash(domain: domain, username: username, password: password) { error, hash in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else if let hash = hash {
+                    cont.resume(returning: hash)
+                } else {
+                    fatalError("no error or hash")
+                }
+            }
         }
 
         configFile.domain.wrappedValue = domain
@@ -80,3 +99,14 @@ private extension PasswordHash {
     }
 }
 
+private struct ErrorView: View {
+    let error: Error
+
+    var body: some View {
+        let userInfo = (error as NSError).userInfo
+        let text = userInfo.keys.map { key in
+            "\(key): \(userInfo[key] ?? "–")"
+        }.joined(separator: "\n")
+        Text(text)
+    }
+}

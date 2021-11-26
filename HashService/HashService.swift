@@ -11,16 +11,17 @@ import ServiceManagement
 public typealias PasswordHash = NSDictionary
 
 @objc public protocol HashServiceProtocol {
-    func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (PasswordHash?) -> Void)
+    func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (NSError?, PasswordHash?) -> Void)
 }
 
 private let pathKey = "PATH"
 private let path = "/usr/local/bin"
 
 class HashService: NSObject, HashServiceProtocol {
-    func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (PasswordHash?) -> Void) {
+    func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (NSError?, PasswordHash?) -> Void) {
         let process = Process()
-        let pipe = Pipe()
+        let stdout = Pipe()
+        let stderr = Pipe()
         process.executableURL = URL(fileURLWithPath: "/bin/sh")
         var environment = ProcessInfo.processInfo.environment
         if let currentPath = environment[pathKey] {
@@ -31,19 +32,27 @@ class HashService: NSObject, HashServiceProtocol {
         process.environment = environment
         // TODO: type in password to avoid shell escapes
         process.arguments = ["-c", "cntlm -H -d '\(domain)' -u '\(username)' -p \(password)"]
-        process.standardOutput = pipe
+        process.standardOutput = stdout
+        process.standardError = stderr
         var data: Data?
         do {
             try process.run()
             process.waitUntilExit()
-            data = try pipe.fileHandleForReading.readToEnd()
+            data = try stdout.fileHandleForReading.readToEnd()
         } catch {
-            print("error: \(error)")
-            reply(nil)
+            reply(error as NSError, nil)
         }
 
         guard process.terminationStatus == 0, let data = data, let string = String(data: data, encoding: .utf8) else {
-            reply(nil)
+            let data = try? stderr.fileHandleForReading.readToEnd()
+            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+
+            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
+                NSLocalizedDescriptionKey: "cntlm failed",
+                "termination status": "\(process.terminationStatus)",
+                "stderr": output
+            ])
+            reply(error, nil)
             return
         }
 
@@ -57,6 +66,6 @@ class HashService: NSObject, HashServiceProtocol {
             values[name] = value
         }
         let hash = PasswordHash(dictionary: values)
-        reply(hash)
+        reply(nil, hash)
     }
 }
