@@ -16,13 +16,18 @@ struct ContentView: View {
         var id: Self { self }
     }
 
-    @AppStorage(AppStorage.configPathKey) var configPath: String = AppStorage.configPathDefault
-    @AppStorage(AppStorage.jobNameKey) var jobName: String = AppStorage.jobNameDefault
+    @AppStorage(AppStorage.configPathKey) private var configPath: String = AppStorage.configPathDefault
+    @AppStorage(AppStorage.jobNameKey) private var jobName: String = AppStorage.jobNameDefault
 
-    @State var file = ConfigFile()
-    @State var password = "password"
+    @State private var savedFile: ConfigFile?
+    @State private var file = ConfigFile()
+    @State private var password = "password"
 
-    @State var modal: Modal?
+    @State private var modal: Modal?
+
+    private var hasChanges: Bool {
+        savedFile != file
+    }
 
     var body: some View {
         Form {
@@ -44,10 +49,15 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     Button("Save", action: save)
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(DefaultButtonStyle())
+                        .environment(\.isEnabled, hasChanges)
                 }
             }
         }
+        .toolbar(content: {
+            Image(systemName: "info.circle")
+        })
+        .navigationSubtitle(savedFile == file ? "" : "Edited")
         .padding()
         .frame(minHeight: 200)
         .sheet(item: $modal, content: { modal in
@@ -79,12 +89,14 @@ struct ContentView: View {
             }
         }
         file = try ConfigFile(string: content)
+        savedFile = file
     }
 
     private func save() {
         Task {
             do {
                 try await save()
+                savedFile = file
             } catch {
                 print("error \(error)")
             }

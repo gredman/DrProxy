@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct ConfigFile {
+struct ConfigFile: Equatable {
     private var lines: [Line]
 
-    private struct Line: Identifiable {
+    private struct Line: Equatable, Identifiable {
         let id: UUID
         var content: Content
 
-        enum Content {
+        enum Content: Equatable {
             case comment(text: String)
             case option(name: String, space: String, value: String)
         }
