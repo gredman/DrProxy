@@ -19,99 +19,68 @@ struct ContentView: View {
     @AppStorage(AppStorage.configPathKey) private var configPath: String = AppStorage.configPathDefault
     @AppStorage(AppStorage.jobNameKey) private var jobName: String = AppStorage.jobNameDefault
 
-    @State private var savedFile: ConfigFile?
-    @State private var file = ConfigFile()
+    @Binding var document: ConfigDocument
+
     @State private var password = "password"
 
     @State private var modal: Modal?
 
-    private var hasChanges: Bool {
-        savedFile != file
-    }
-
     var body: some View {
         Form {
             Section(header: Text("Credentials")) {
-                TextField("Username", text: $file.username).disabled(true)
-                TextField("Domain", text: $file.domain).disabled(true)
+                TextField("Username", text: $document.file.username).disabled(true)
+                TextField("Domain", text: $document.file.domain).disabled(true)
                 HStack {
                     SecureField("Password", text: $password).disabled(true)
                     Button("Change…", action: changePassword)
                 }
             }
             Section(header: Text("Proxy")) {
-                TextField("Upstream", text: $file.proxy)
-                TextField("Bypass", text: $file.noProxy)
-                TextField("Port", text: $file.listen)
-                TextField("Gateway", text: $file.gateway)
+                TextField("Upstream", text: $document.file.proxy)
+                TextField("Bypass", text: $document.file.noProxy)
+                TextField("Port", text: $document.file.listen)
+                TextField("Gateway", text: $document.file.gateway)
             }
             Section {
                 HStack {
                     Spacer()
                     Button("Save", action: save)
                         .buttonStyle(DefaultButtonStyle())
-                        .environment(\.isEnabled, hasChanges)
+                        .environment(\.isEnabled, document.hasChanges)
                 }
             }
         }
         .toolbar(content: {
             Image(systemName: "info.circle")
         })
-        .navigationSubtitle(savedFile == file ? "" : "Edited")
+        .navigationSubtitle(!document.hasChanges ? "" : "Edited")
         .padding()
         .frame(minHeight: 200)
         .sheet(item: $modal, content: { modal in
             switch modal {
             case .changePassword:
-                ChangePasswordView(configFile: $file)
+                ChangePasswordView(configFile: $document.file)
             }
         })
         .task {
-            do {
-                try await load()
-            } catch {
-                print("error \(error)")
-            }
+            await load()
         }
     }
 
-    private func load() async throws {
-        let content = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<String, Error>) in
-            let url = URL(fileURLWithPath: configPath)
-            NSXPCConnection.fileService.readFile(url: url) { error, content in
-                if let error = error {
-                    cont.resume(throwing: error)
-                } else if let content = content {
-                    cont.resume(returning: content)
-                } else {
-                    fatalError()
-                }
-            }
+    private func load() async {
+        do {
+            try await document.load(path: configPath)
+        } catch {
+            print("error \(error)")
         }
-        file = try ConfigFile(string: content)
-        savedFile = file
     }
 
     private func save() {
         Task {
             do {
-                try await save()
-                savedFile = file
+                try await document.save(path: configPath)
             } catch {
                 print("error \(error)")
-            }
-        }
-    }
-
-    private func save() async throws {
-        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            let url = URL(fileURLWithPath: configPath)
-            NSXPCConnection.fileService.writeFile(url: url, content: file.string) { error in
-                if let error = error {
-                    cont.resume(throwing: error)
-                } else {
-                    cont.resume(returning: ())
-                }
             }
         }
     }
@@ -121,8 +90,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
