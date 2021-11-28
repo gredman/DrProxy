@@ -15,6 +15,9 @@ struct DrProxyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(document: $document)
+                .task {
+                    await load()
+                }
         }
         .commands {
             CommandGroup(replacing: .saveItem) {
@@ -28,13 +31,25 @@ struct DrProxyApp: App {
         }
     }
 
+    private func load() async {
+        do {
+            try await document.load(path: configPath)
+        } catch {
+            print("error \(error)")
+        }
+    }
+
     private func save() {
         Task {
-            do {
-                try await document.save(path: configPath)
-            } catch {
-                print("error: \(error)")
-            }
+            await save()
+        }
+    }
+
+    private func save() async {
+        do {
+            try await document.save()
+        } catch {
+            print("error: \(error)")
         }
     }
 }

@@ -8,7 +8,9 @@
 import Foundation
 
 struct ConfigDocument {
-    var savedFile: ConfigFile?
+    private var path: String?
+    private var savedFile: ConfigFile?
+
     var file = ConfigFile()
 
     var hasChanges: Bool {
@@ -30,11 +32,12 @@ struct ConfigDocument {
         }
         file = try ConfigFile(string: content)
         savedFile = file
+        self.path = path
     }
 
-    mutating func save(path: String) async throws {
+    mutating func save() async throws {
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            let url = URL(fileURLWithPath: path)
+            let url = URL(fileURLWithPath: path!)
             NSXPCConnection.fileService.writeFile(url: url, content: file.string) { error in
                 if let error = error {
                     cont.resume(throwing: error)

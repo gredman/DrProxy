@@ -16,9 +16,6 @@ struct ContentView: View {
         var id: Self { self }
     }
 
-    @AppStorage(AppStorage.configPathKey) private var configPath: String = AppStorage.configPathDefault
-    @AppStorage(AppStorage.jobNameKey) private var jobName: String = AppStorage.jobNameDefault
-
     @Binding var document: ConfigDocument
 
     @State private var password = "password"
@@ -62,23 +59,12 @@ struct ContentView: View {
                 ChangePasswordView(configFile: $document.file)
             }
         })
-        .task {
-            await load()
-        }
-    }
-
-    private func load() async {
-        do {
-            try await document.load(path: configPath)
-        } catch {
-            print("error \(error)")
-        }
     }
 
     private func save() {
         Task {
             do {
-                try await document.save(path: configPath)
+                try await document.save()
             } catch {
                 print("error \(error)")
             }
