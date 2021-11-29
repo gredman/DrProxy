@@ -23,6 +23,7 @@
 		B45AE32F27504D68006BCD00 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32E27504D68006BCD00 /* FileService.swift */; };
 		B45AE33027504D68006BCD00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32D27504D68006BCD00 /* main.swift */; };
 		B4A675682754817800C8C414 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A675672754817700C8C414 /* ErrorView.swift */; };
+		B4A6756A2754845800C8C414 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A675692754845800C8C414 /* EditorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		B45AE32D27504D68006BCD00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B45AE32E27504D68006BCD00 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		B4A675672754817700C8C414 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		B4A675692754845800C8C414 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				B45AE30A27504819006BCD00 /* ContentView.swift */,
 				B45AE3112750481B006BCD00 /* DrProxy.entitlements */,
 				B45AE30827504819006BCD00 /* DrProxyApp.swift */,
+				B4A675692754845800C8C414 /* EditorView.swift */,
 				B4A675672754817700C8C414 /* ErrorView.swift */,
 				B41BCB18275078CE001A69CD /* NSXPCConnection.swift */,
 				B45AE30E2750481B006BCD00 /* Preview Content */,
@@ -321,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4A6756A2754845800C8C414 /* EditorView.swift in Sources */,
 				B41BCB19275078CE001A69CD /* NSXPCConnection.swift in Sources */,
 				B45AE3182750493B006BCD00 /* AppStorage.swift in Sources */,
 				B41BCAFC2750628A001A69CD /* ConfigFile.swift in Sources */,
