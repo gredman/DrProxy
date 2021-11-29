@@ -32,24 +32,12 @@ struct DrProxyApp: App {
     }
 
     private func load() async {
-        do {
-            try await document.load(path: configPath)
-        } catch {
-            print("error \(error)")
-        }
+        await document.load(path: configPath)
     }
 
     private func save() {
         Task {
-            await save()
-        }
-    }
-
-    private func save() async {
-        do {
-            try await document.save()
-        } catch {
-            print("error: \(error)")
+            await document.save()
         }
     }
 }

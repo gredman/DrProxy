@@ -10,6 +10,29 @@ import SwiftUI
 import FileService
 
 struct ContentView: View {
+    @Binding var document: ConfigDocument
+
+    var body: some View {
+        EditorView(document: $document)
+            .toolbar(content: {
+                Image(systemName: "info.circle")
+            })
+            .navigationSubtitle(!document.hasChanges ? "" : "Edited")
+            .padding()
+            .frame(minHeight: 200)
+//            .sheet(item: $document.error) { wrapper in
+//                ErrorView(error: wrapper.error)
+//            }
+
+            .alert(document.error?.error.localizedDescription ?? "Error", isPresented: $document.hasError, actions: {}, message: {
+                if let error = document.error?.error {
+                    ErrorView(error: error)
+                }
+            })
+    }
+}
+
+struct EditorView: View {
     enum Modal: Identifiable {
         case changePassword
 
@@ -47,12 +70,6 @@ struct ContentView: View {
                 }
             }
         }
-        .toolbar(content: {
-            Image(systemName: "info.circle")
-        })
-        .navigationSubtitle(!document.hasChanges ? "" : "Edited")
-        .padding()
-        .frame(minHeight: 200)
         .sheet(item: $modal, content: { modal in
             switch modal {
             case .changePassword:
@@ -63,11 +80,7 @@ struct ContentView: View {
 
     private func save() {
         Task {
-            do {
-                try await document.save()
-            } catch {
-                print("error \(error)")
-            }
+            await document.save()
         }
     }
 
@@ -75,9 +88,3 @@ struct ContentView: View {
         modal = .changePassword
     }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}

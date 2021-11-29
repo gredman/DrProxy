@@ -22,6 +22,7 @@
 		B45AE32827504D2F006BCD00 /* FileService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = B45AE31D27504D2F006BCD00 /* FileService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B45AE32F27504D68006BCD00 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32E27504D68006BCD00 /* FileService.swift */; };
 		B45AE33027504D68006BCD00 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE32D27504D68006BCD00 /* main.swift */; };
+		B4A675682754817800C8C414 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A675672754817700C8C414 /* ErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		B45AE32527504D2F006BCD00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B45AE32D27504D68006BCD00 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B45AE32E27504D68006BCD00 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		B4A675672754817700C8C414 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,11 +151,12 @@
 				B45AE3172750493B006BCD00 /* AppStorage.swift */,
 				B45AE30C2750481B006BCD00 /* Assets.xcassets */,
 				B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */,
+				B41BCB2C275418AF001A69CD /* ConfigDocument.swift */,
 				B41BCAFB2750628A001A69CD /* ConfigFile.swift */,
 				B45AE30A27504819006BCD00 /* ContentView.swift */,
-				B41BCB2C275418AF001A69CD /* ConfigDocument.swift */,
 				B45AE3112750481B006BCD00 /* DrProxy.entitlements */,
 				B45AE30827504819006BCD00 /* DrProxyApp.swift */,
+				B4A675672754817700C8C414 /* ErrorView.swift */,
 				B41BCB18275078CE001A69CD /* NSXPCConnection.swift */,
 				B45AE30E2750481B006BCD00 /* Preview Content */,
 			);
@@ -325,6 +328,7 @@
 				B45AE30B27504819006BCD00 /* ContentView.swift in Sources */,
 				B41BCB2D275418AF001A69CD /* ConfigDocument.swift in Sources */,
 				B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */,
+				B4A675682754817800C8C414 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
