@@ -8,8 +8,6 @@
 import Foundation
 
 import Services
-import FileService
-import HashService
 
 extension NSXPCConnection {
     static var fileService: FileServiceProtocol = {
@@ -30,5 +28,15 @@ extension NSXPCConnection {
         return connection.remoteObjectProxyWithErrorHandler({ error in
             fatalError("remote proxy error: \(error)")
         }) as! HashServiceProtocol
+    }()
+
+    static var launchService: LaunchServiceProtocol = {
+        let connection = NSXPCConnection(serviceName: "computer.gareth.DrProxy.LaunchService")
+        connection.remoteObjectInterface = NSXPCInterface(with: LaunchServiceProtocol.self)
+        connection.resume()
+
+        return connection.remoteObjectProxyWithErrorHandler({ error in
+            fatalError("remote proxy error: \(error)")
+        }) as! LaunchServiceProtocol
     }()
 }

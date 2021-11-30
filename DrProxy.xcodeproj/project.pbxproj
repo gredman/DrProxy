@@ -29,6 +29,10 @@
 		B4AC06B02755DE7200C7FE16 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AC06AF2755DE7200C7FE16 /* Services.swift */; };
 		B4AC06B22755DEA000C7FE16 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AC06A42755DE5B00C7FE16 /* Services.framework */; };
 		B4AC06B32755DEA700C7FE16 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AC06A42755DE5B00C7FE16 /* Services.framework */; };
+		B4AC06C32755DF1200C7FE16 /* LaunchService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = B4AC06B82755DF1200C7FE16 /* LaunchService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B4AC06CA2755DF4900C7FE16 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AC06C92755DF4900C7FE16 /* main.swift */; };
+		B4AC06CF2755DF8000C7FE16 /* LaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AC06CE2755DF8000C7FE16 /* LaunchService.swift */; };
+		B4AC06D02755DFAE00C7FE16 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AC06A42755DE5B00C7FE16 /* Services.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,13 @@
 			remoteGlobalIDString = B4AC06A32755DE5B00C7FE16;
 			remoteInfo = Services;
 		};
+		B4AC06C12755DF1200C7FE16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B45AE2FD27504819006BCD00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B4AC06B72755DF1200C7FE16;
+			remoteInfo = LaunchService;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +75,7 @@
 			files = (
 				B45AE32827504D2F006BCD00 /* FileService.xpc in Embed XPC Services */,
 				B41BCB0E275072F7001A69CD /* HashService.xpc in Embed XPC Services */,
+				B4AC06C32755DF1200C7FE16 /* LaunchService.xpc in Embed XPC Services */,
 			);
 			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,6 +117,10 @@
 		B4A675692754845800C8C414 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		B4AC06A42755DE5B00C7FE16 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4AC06AF2755DE7200C7FE16 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		B4AC06B82755DF1200C7FE16 /* LaunchService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = LaunchService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4AC06C02755DF1200C7FE16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B4AC06C92755DF4900C7FE16 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B4AC06CE2755DF8000C7FE16 /* LaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +155,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B4AC06B52755DF1200C7FE16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4AC06D02755DFAE00C7FE16 /* Services.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -159,6 +183,7 @@
 				B45AE31E27504D2F006BCD00 /* FileService */,
 				B41BCB04275072F7001A69CD /* HashService */,
 				B4AC06A52755DE5B00C7FE16 /* Services */,
+				B4AC06B92755DF1200C7FE16 /* LaunchService */,
 				B45AE30627504819006BCD00 /* Products */,
 				B4AC06B12755DEA000C7FE16 /* Frameworks */,
 			);
@@ -171,6 +196,7 @@
 				B45AE31D27504D2F006BCD00 /* FileService.xpc */,
 				B41BCB03275072F7001A69CD /* HashService.xpc */,
 				B4AC06A42755DE5B00C7FE16 /* Services.framework */,
+				B4AC06B82755DF1200C7FE16 /* LaunchService.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -227,6 +253,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B4AC06B92755DF1200C7FE16 /* LaunchService */ = {
+			isa = PBXGroup;
+			children = (
+				B4AC06C02755DF1200C7FE16 /* Info.plist */,
+				B4AC06C92755DF4900C7FE16 /* main.swift */,
+				B4AC06CE2755DF8000C7FE16 /* LaunchService.swift */,
+			);
+			path = LaunchService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -273,6 +309,7 @@
 				B45AE32727504D2F006BCD00 /* PBXTargetDependency */,
 				B41BCB0D275072F7001A69CD /* PBXTargetDependency */,
 				B4AC06A92755DE5B00C7FE16 /* PBXTargetDependency */,
+				B4AC06C22755DF1200C7FE16 /* PBXTargetDependency */,
 			);
 			name = DrProxy;
 			productName = DrProxy;
@@ -314,6 +351,23 @@
 			productReference = B4AC06A42755DE5B00C7FE16 /* Services.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B4AC06B72755DF1200C7FE16 /* LaunchService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4AC06C42755DF1200C7FE16 /* Build configuration list for PBXNativeTarget "LaunchService" */;
+			buildPhases = (
+				B4AC06B42755DF1200C7FE16 /* Sources */,
+				B4AC06B52755DF1200C7FE16 /* Frameworks */,
+				B4AC06B62755DF1200C7FE16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LaunchService;
+			productName = LaunchService;
+			productReference = B4AC06B82755DF1200C7FE16 /* LaunchService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -338,6 +392,10 @@
 						CreatedOnToolsVersion = 13.2;
 						LastSwiftMigration = 1320;
 					};
+					B4AC06B72755DF1200C7FE16 = {
+						CreatedOnToolsVersion = 13.2;
+						LastSwiftMigration = 1320;
+					};
 				};
 			};
 			buildConfigurationList = B45AE30027504819006BCD00 /* Build configuration list for PBXProject "DrProxy" */;
@@ -356,6 +414,7 @@
 				B45AE30427504819006BCD00 /* DrProxy */,
 				B45AE31C27504D2F006BCD00 /* FileService */,
 				B41BCB02275072F7001A69CD /* HashService */,
+				B4AC06B72755DF1200C7FE16 /* LaunchService */,
 				B4AC06A32755DE5B00C7FE16 /* Services */,
 			);
 		};
@@ -386,6 +445,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B4AC06A22755DE5B00C7FE16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4AC06B62755DF1200C7FE16 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -437,6 +503,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B4AC06B42755DF1200C7FE16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4AC06CF2755DF8000C7FE16 /* LaunchService.swift in Sources */,
+				B4AC06CA2755DF4900C7FE16 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -454,6 +529,11 @@
 			isa = PBXTargetDependency;
 			target = B4AC06A32755DE5B00C7FE16 /* Services */;
 			targetProxy = B4AC06A82755DE5B00C7FE16 /* PBXContainerItemProxy */;
+		};
+		B4AC06C22755DF1200C7FE16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B4AC06B72755DF1200C7FE16 /* LaunchService */;
+			targetProxy = B4AC06C12755DF1200C7FE16 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -787,6 +867,61 @@
 			};
 			name = Release;
 		};
+		B4AC06C52755DF1200C7FE16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LaunchService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LaunchService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.LaunchService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B4AC06C62755DF1200C7FE16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UB3GT59Z2L;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LaunchService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LaunchService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.LaunchService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -831,6 +966,15 @@
 			buildConfigurations = (
 				B4AC06AC2755DE5B00C7FE16 /* Debug */,
 				B4AC06AD2755DE5B00C7FE16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4AC06C42755DF1200C7FE16 /* Build configuration list for PBXNativeTarget "LaunchService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4AC06C52755DF1200C7FE16 /* Debug */,
+				B4AC06C62755DF1200C7FE16 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
