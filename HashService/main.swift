@@ -1,5 +1,7 @@
 import Foundation
 
+import Services
+
 @objc class ServiceDelegate : NSObject, NSXPCListenerDelegate {
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
         newConnection.exportedInterface = NSXPCInterface(with: HashServiceProtocol.self)

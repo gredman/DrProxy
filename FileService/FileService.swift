@@ -8,10 +8,7 @@
 import Foundation
 import ServiceManagement
 
-@objc public protocol FileServiceProtocol {
-    func readFile(url: URL, withReply reply: @escaping (NSError?, String?) -> Void)
-    func writeFile(url: URL, content: String, withReply reply: @escaping (NSError?) -> Void)
-}
+import Services
 
 class FileService: NSObject, FileServiceProtocol {
     func readFile(url: URL, withReply reply: @escaping (NSError?, String?) -> Void) {

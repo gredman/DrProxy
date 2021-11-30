@@ -8,11 +8,7 @@
 import Foundation
 import ServiceManagement
 
-public typealias PasswordHash = NSDictionary
-
-@objc public protocol HashServiceProtocol {
-    func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (NSError?, PasswordHash?) -> Void)
-}
+import Services
 
 private let pathKey = "PATH"
 private let path = "/usr/local/bin"

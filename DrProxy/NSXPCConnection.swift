@@ -7,6 +7,7 @@
 
 import Foundation
 
+import Services
 import FileService
 import HashService
 

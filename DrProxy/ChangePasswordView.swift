@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import Services
 import HashService
 
 struct ChangePasswordView: View {
