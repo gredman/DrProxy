@@ -46,14 +46,6 @@ struct EditorView: View {
                 TextField("Port", text: $document.file.listen)
                 Toggle("Gateway", isOn: Binding($document.file.gateway))
             }
-            Section {
-                HStack {
-                    Spacer()
-                    Button("Save", action: save)
-                        .buttonStyle(DefaultButtonStyle())
-                        .environment(\.isEnabled, document.hasChanges)
-                }
-            }
         }
         .sheet(item: $modal, content: { modal in
             switch modal {
@@ -61,12 +53,6 @@ struct EditorView: View {
                 ChangePasswordView(configFile: $document.file)
             }
         })
-    }
-
-    private func save() {
-        Task {
-            await document.save()
-        }
     }
 
     private func changePassword() {

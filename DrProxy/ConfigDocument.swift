@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct IdentifiedError: Identifiable, Equatable {
     let error: Error
@@ -17,14 +18,26 @@ struct IdentifiedError: Identifiable, Equatable {
 }
 
 struct ConfigDocument {
-    private var path: String?
     private var savedFile: ConfigFile?
+
+    private var bookmarkData: Data? {
+        get {
+            UserDefaults.standard.data(forKey: AppStorage.configBookmarkKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppStorage.configBookmarkKey)
+        }
+    }
 
     var file = ConfigFile()
     var error: IdentifiedError?
 
+    var isLoaded: Bool {
+        savedFile != nil
+    }
+
     var hasChanges: Bool {
-        savedFile != file
+        isLoaded && savedFile != file
     }
 
     var hasError: Bool {
@@ -35,54 +48,47 @@ struct ConfigDocument {
         }
     }
 
-    mutating func load(path: String) async {
+    mutating func load() {
+        guard let bookmarkData = bookmarkData else {
+            return
+        }
+
         do {
-            try await _load(path: path)
-            error = nil
+            var isStale = false
+            let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+            if isStale {
+                self.bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            }
+
+            file = try ConfigFile(contentsOf: url)
+            savedFile = file
         } catch {
             self.error = IdentifiedError(error: error)
         }
     }
 
-    mutating func save() async {
-        guard path != nil else { return }
+    mutating func load(path: String) {
         do {
-            try await _save()
-            error = nil
-        } catch {
-            self.error = IdentifiedError(error: error)
-        }
-    }
-
-    private mutating func _load(path: String) async throws {
-        let content = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<String, Error>) in
             let url = URL(fileURLWithPath: path)
-            NSXPCConnection.fileService.readFile(url: url) { error, content in
-                if let error = error {
-                    cont.resume(throwing: error)
-                } else if let content = content {
-                    cont.resume(returning: content)
-                } else {
-                    fatalError()
-                }
-            }
+            file = try ConfigFile(contentsOf: url)
+            bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            savedFile = file
+        } catch {
+            self.error = IdentifiedError(error: error)
         }
-        file = try ConfigFile(string: content)
-        savedFile = file
-        self.path = path
     }
 
-    private mutating func _save() async throws {
-        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            let url = URL(fileURLWithPath: path!)
-            NSXPCConnection.fileService.writeFile(url: url, content: file.string) { error in
-                if let error = error {
-                    cont.resume(throwing: error)
-                } else {
-                    cont.resume(returning: ())
-                }
+    mutating func save() {
+        do  {
+            var isStale = false
+            let url = try URL(resolvingBookmarkData: bookmarkData!, bookmarkDataIsStale: &isStale)
+            if isStale {
+                bookmarkData = try url.bookmarkData(options: .minimalBookmark)
             }
+            try file.write(to: url)
+            savedFile = file
+        } catch {
+            self.error = IdentifiedError(error: error)
         }
-        savedFile = file
     }
 }

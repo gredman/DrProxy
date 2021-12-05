@@ -8,9 +8,9 @@
 import SwiftUI
 
 extension AppStorage where Value == String {
-    static let configPathKey = "configPath"
+    static let configBookmarkKey = "configBookmark"
     static let jobNameKey = "jobName"
 
-    static let configPathDefault = "/usr/local/etc/cntlm.conf"
+    static let configPathDefault = "/usr/local/etc"
     static let jobNameDefault = "homebrew.mxcl.cntlm"
 }

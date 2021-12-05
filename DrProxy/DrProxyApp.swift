@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct DrProxyApp: App {
     @State var document = ConfigDocument()
-    @AppStorage(AppStorage.configPathKey) var configPath: String = AppStorage.configPathDefault
 
     var body: some Scene {
         WindowGroup {
@@ -32,23 +31,19 @@ struct DrProxyApp: App {
     }
 
     private func load() async {
-        await document.load(path: configPath)
+        document.load()
     }
 
     private func save() {
-        Task {
-            await document.save()
-        }
+        document.save()
     }
 }
 
 private struct PreferencesView: View {
-    @AppStorage(AppStorage.configPathKey) var configPath: String = AppStorage.configPathDefault
     @AppStorage(AppStorage.jobNameKey) var jobName: String = AppStorage.jobNameDefault
 
     var body: some View {
         Form {
-            TextField("Path", text: $configPath, prompt: Text(AppStorage.configPathDefault))
             TextField("Job Name", text: $jobName, prompt: Text(AppStorage.jobNameDefault))
         }
         .padding()

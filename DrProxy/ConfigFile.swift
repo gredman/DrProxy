@@ -41,6 +41,11 @@ struct ConfigFile: Equatable {
         self.lines = []
     }
 
+    init(contentsOf url: URL) throws {
+        let string = try String(contentsOf: url)
+        try self.init(string: string)
+    }
+
     init(string: String) throws {
         let regex = try! NSRegularExpression(pattern: #"^(\w+)(\s+)(.+)$"#, options: [])
         var lines = [Line]()
@@ -58,6 +63,10 @@ struct ConfigFile: Equatable {
             }
         })
         self.lines = lines
+    }
+
+    func write(to url: URL) throws {
+        try string.write(to: url, atomically: true, encoding: .utf8)
     }
 
     var username: String {

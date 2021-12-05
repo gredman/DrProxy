@@ -7,11 +7,6 @@
 
 import Foundation
 
-@objc public protocol FileServiceProtocol {
-    func readFile(url: URL, withReply reply: @escaping (NSError?, String?) -> Void)
-    func writeFile(url: URL, content: String, withReply reply: @escaping (NSError?) -> Void)
-}
-
 public typealias PasswordHash = NSDictionary
 
 @objc public protocol HashServiceProtocol {
