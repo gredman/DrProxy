@@ -17,6 +17,7 @@ struct IdentifiedError: Identifiable, Equatable {
     }
 }
 
+@MainActor
 class ConfigDocument: NSObject, ObservableObject {
     @Published var file = ConfigFile() {
         didSet {
@@ -70,7 +71,7 @@ class ConfigDocument: NSObject, ObservableObject {
         NSFileCoordinator.removeFilePresenter(self)
     }
 
-    func load() {
+    func load() async {
         guard let bookmarkData = bookmarkData else {
             return
         }
@@ -78,52 +79,38 @@ class ConfigDocument: NSObject, ObservableObject {
         do {
             var isStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
-            load(url: url)
+            await load(url: url)
         } catch {
             self.error = IdentifiedError(error: error)
         }
     }
 
-    func load(path: String) {
-        load(url: URL(fileURLWithPath: path))
+    func load(path: String) async {
+        await load(url: URL(fileURLWithPath: path))
     }
 
-    func load(url: URL) {
-        var error: NSError?
-        let coordinator = NSFileCoordinator(filePresenter: self)
-        coordinator.coordinate(readingItemAt: url, options: [], error: &error) { url in
-            do {
-                self.file = try ConfigFile(contentsOf: url)
-            } catch {
-                self.error = IdentifiedError(error: error)
-            }
-        }
-
+    func load(url: URL) async {
         do {
+            let coordinator = NSFileCoordinator(filePresenter: self)
+            let url = try await coordinator.coordinate(readingItemAt: url)
+            file = try ConfigFile(contentsOf: url)
             bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            savedFile = file
         } catch {
             self.error = IdentifiedError(error: error)
         }
-
-        savedFile = file
     }
 
-    func save() {
-        var isStale = false
+    func save() async {
         do {
+            var isStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData!, bookmarkDataIsStale: &isStale)
             if isStale {
                 bookmarkData = try url.bookmarkData(options: .minimalBookmark)
             }
-            var error: NSError?
             let coordinator = NSFileCoordinator(filePresenter: self)
-            coordinator.coordinate(writingItemAt: url, options: [], error: &error) { url in
-                do {
-                    try self.file.write(to: url)
-                } catch {
-                    self.error = IdentifiedError(error: error)
-                }
-            }
+            let url2 = try await coordinator.coordinate(readingItemAt: url)
+            try file.write(to: url2)
             savedFile = file
         } catch {
             self.error = IdentifiedError(error: error)
@@ -143,6 +130,34 @@ extension ConfigDocument: NSFilePresenter {
     }
 
     func presentedItemDidChange() {
-        load()
+        Task {
+            await load()
+        }
+    }
+}
+
+private extension NSFileCoordinator {
+    func coordinate(readingItemAt url: URL, options: ReadingOptions = []) async throws -> URL {
+        var error: NSError?
+        return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) in
+            coordinate(readingItemAt: url, options: options, error: &error) { url in
+                cont.resume(returning: url)
+            }
+            if let error = error {
+                cont.resume(throwing: error)
+            }
+        }
+    }
+
+    func coordinate(writingItemAt url: URL, options: WritingOptions = [])async throws -> URL  {
+        var error: NSError?
+        return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) in
+            coordinate(writingItemAt: url, options: options, error: &error) { url in
+                cont.resume(returning: url)
+            }
+            if let error = error {
+                cont.resume(throwing: error)
+            }
+        }
     }
 }

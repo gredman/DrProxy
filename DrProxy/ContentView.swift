@@ -46,10 +46,15 @@ struct ContentView: View {
         guard result == .OK, let url = panel.url else {
             return
         }
-        document.load(path: url.path)
+
+        Task {
+            await document.load(path: url.path)
+        }
     }
 
     private func save() {
-        document.save()
+        Task {
+            await document.save()
+        }
     }
 }
