@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Binding var document: ConfigDocument
+    @ObservedObject var document: ConfigDocument
 
     var body: some View {
         VStack {
-            EditorView(document: $document)
+            EditorView(document: document)
                 .environment(\.isEnabled, document.isLoaded)
             HStack {
                 Spacer()

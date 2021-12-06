@@ -9,14 +9,12 @@ import SwiftUI
 
 @main
 struct DrProxyApp: App {
-    @State var document = ConfigDocument()
+    @StateObject var document = ConfigDocument()
 
     var body: some Scene {
         WindowGroup {
-            ContentView(document: $document)
-                .task {
-                    await load()
-                }
+            ContentView(document: document)
+                .onAppear(perform: load)
         }
         .commands {
             CommandGroup(replacing: .saveItem) {
@@ -30,7 +28,7 @@ struct DrProxyApp: App {
         }
     }
 
-    private func load() async {
+    private func load() {
         document.load()
     }
 

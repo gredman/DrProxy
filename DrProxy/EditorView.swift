@@ -24,7 +24,7 @@ struct EditorView: View {
         var id: Self { self }
     }
 
-    @Binding var document: ConfigDocument
+    @ObservedObject var document: ConfigDocument
 
     @State private var password = "password"
 

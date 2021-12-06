@@ -17,8 +17,40 @@ struct IdentifiedError: Identifiable, Equatable {
     }
 }
 
-struct ConfigDocument {
-    private var savedFile: ConfigFile?
+class ConfigDocument: NSObject, ObservableObject {
+    @Published var file = ConfigFile() {
+        didSet {
+            updateHasChanges()
+        }
+    }
+    @Published var error: IdentifiedError? {
+        didSet {
+            updateHasError()
+        }
+    }
+
+    @Published var isLoaded = false
+    @Published var hasChanges = false
+    @Published var hasError = false
+
+    private var savedFile: ConfigFile? {
+        didSet {
+            updateIsLoaded()
+            updateHasChanges()
+        }
+    }
+
+    private func updateIsLoaded() {
+        isLoaded = savedFile != nil
+    }
+
+    private func updateHasChanges() {
+        hasChanges = isLoaded && savedFile != file
+    }
+
+    private func updateHasError() {
+        hasError = error != nil
+    }
 
     private var bookmarkData: Data? {
         get {
@@ -29,26 +61,16 @@ struct ConfigDocument {
         }
     }
 
-    var file = ConfigFile()
-    var error: IdentifiedError?
-
-    var isLoaded: Bool {
-        savedFile != nil
+    override init() {
+        super.init()
+        NSFileCoordinator.addFilePresenter(self)
     }
 
-    var hasChanges: Bool {
-        isLoaded && savedFile != file
+    deinit {
+        NSFileCoordinator.removeFilePresenter(self)
     }
 
-    var hasError: Bool {
-        get { error != nil }
-        set {
-            assert(!newValue)
-            error = nil
-        }
-    }
-
-    mutating func load() {
+    func load() {
         guard let bookmarkData = bookmarkData else {
             return
         }
@@ -56,39 +78,71 @@ struct ConfigDocument {
         do {
             var isStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
-            if isStale {
-                self.bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            load(url: url)
+        } catch {
+            self.error = IdentifiedError(error: error)
+        }
+    }
+
+    func load(path: String) {
+        load(url: URL(fileURLWithPath: path))
+    }
+
+    func load(url: URL) {
+        var error: NSError?
+        let coordinator = NSFileCoordinator(filePresenter: self)
+        coordinator.coordinate(readingItemAt: url, options: [], error: &error) { url in
+            do {
+                self.file = try ConfigFile(contentsOf: url)
+            } catch {
+                self.error = IdentifiedError(error: error)
             }
-
-            file = try ConfigFile(contentsOf: url)
-            savedFile = file
-        } catch {
-            self.error = IdentifiedError(error: error)
         }
-    }
 
-    mutating func load(path: String) {
         do {
-            let url = URL(fileURLWithPath: path)
-            file = try ConfigFile(contentsOf: url)
             bookmarkData = try url.bookmarkData(options: .minimalBookmark)
-            savedFile = file
         } catch {
             self.error = IdentifiedError(error: error)
         }
+
+        savedFile = file
     }
 
-    mutating func save() {
-        do  {
-            var isStale = false
+    func save() {
+        var isStale = false
+        do {
             let url = try URL(resolvingBookmarkData: bookmarkData!, bookmarkDataIsStale: &isStale)
             if isStale {
                 bookmarkData = try url.bookmarkData(options: .minimalBookmark)
             }
-            try file.write(to: url)
+            var error: NSError?
+            let coordinator = NSFileCoordinator(filePresenter: self)
+            coordinator.coordinate(writingItemAt: url, options: [], error: &error) { url in
+                do {
+                    try self.file.write(to: url)
+                } catch {
+                    self.error = IdentifiedError(error: error)
+                }
+            }
             savedFile = file
         } catch {
             self.error = IdentifiedError(error: error)
         }
+    }
+}
+
+extension ConfigDocument: NSFilePresenter {
+    var presentedItemURL: URL? {
+        guard let bookmarkData = bookmarkData else { return nil}
+        var isStale = false
+        return try? URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+    }
+
+    var presentedItemOperationQueue: OperationQueue {
+        .main
+    }
+
+    func presentedItemDidChange() {
+        load()
     }
 }
