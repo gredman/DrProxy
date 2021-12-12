@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct DrProxyApp: App {
-    @StateObject var document = ConfigDocument()
+    @StateObject var loader = ConfigLoader()
 
     var body: some Scene {
         WindowGroup {
-            ContentView(document: document)
+            ContentView(loader: loader)
                 .task {
                     await load()
                 }
@@ -31,12 +31,12 @@ struct DrProxyApp: App {
     }
 
     private func load() async {
-        await document.load()
+        await loader.load()
     }
 
     private func save() {
         Task {
-            await document.save()
+            await loader.save()
         }
     }
 }

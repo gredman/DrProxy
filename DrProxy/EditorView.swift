@@ -24,7 +24,7 @@ struct EditorView: View {
         var id: Self { self }
     }
 
-    @ObservedObject var document: ConfigDocument
+    @ObservedObject var loader: ConfigLoader
 
     @State private var password = "password"
 
@@ -33,24 +33,24 @@ struct EditorView: View {
     var body: some View {
         Form {
             Section(header: Text("Credentials")) {
-                TextField("Username", text: $document.file.username).disabled(true)
-                TextField("Domain", text: $document.file.domain).disabled(true)
+                TextField("Username", text: $loader.file.username).disabled(true)
+                TextField("Domain", text: $loader.file.domain).disabled(true)
                 HStack {
                     SecureField("Password", text: $password).disabled(true)
                     Button("Change…", action: changePassword)
                 }
             }
             Section(header: Text("Proxy")) {
-                TextField("Upstream", text: $document.file.proxy)
-                TextField("Bypass", text: $document.file.noProxy)
-                TextField("Port", text: $document.file.listen)
-                Toggle("Gateway", isOn: Binding($document.file.gateway))
+                TextField("Upstream", text: $loader.file.proxy)
+                TextField("Bypass", text: $loader.file.noProxy)
+                TextField("Port", text: $loader.file.listen)
+                Toggle("Gateway", isOn: Binding($loader.file.gateway))
             }
         }
         .sheet(item: $modal, content: { modal in
             switch modal {
             case .changePassword:
-                ChangePasswordView(configFile: $document.file)
+                ChangePasswordView(configFile: $loader.file)
             }
         })
     }

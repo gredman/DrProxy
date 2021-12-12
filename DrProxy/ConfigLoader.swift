@@ -1,5 +1,5 @@
 //
-//  ConfigDocument.swift
+//  ConfigLoader.swift
 //  DrProxy
 //
 //  Created by Gareth Redman on 29/11/21.
@@ -17,7 +17,7 @@ struct IdentifiedError: Identifiable, Equatable {
     }
 }
 
-class ConfigDocument: NSObject, ObservableObject {
+class ConfigLoader: NSObject, ObservableObject {
     @Published var file = ConfigFile() {
         didSet {
             updateHasChanges()
@@ -129,7 +129,7 @@ class ConfigDocument: NSObject, ObservableObject {
     }
 }
 
-extension ConfigDocument: NSFilePresenter {
+extension ConfigLoader: NSFilePresenter {
     var presentedItemURL: URL? {
         guard let bookmarkData = bookmarkData else { return nil}
         var isStale = false

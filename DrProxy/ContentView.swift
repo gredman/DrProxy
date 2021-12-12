@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var document: ConfigDocument
+    @ObservedObject var loader: ConfigLoader
 
     var body: some View {
         VStack {
-            EditorView(document: document)
-                .environment(\.isEnabled, document.isLoaded)
+            EditorView(loader: loader)
+                .environment(\.isEnabled, loader.isLoaded)
             HStack {
                 Spacer()
                 Button("Open", action: open)
                 Button("Save", action: save)
                     .buttonStyle(DefaultButtonStyle())
-                    .environment(\.isEnabled, document.hasChanges)
+                    .environment(\.isEnabled, loader.hasChanges)
             }
         }
         .toolbar(content: {
             Image(systemName: "info.circle")
         })
-        .navigationSubtitle(!document.hasChanges ? "" : "Edited")
+        .navigationSubtitle(!loader.hasChanges ? "" : "Edited")
         .padding()
         .frame(minHeight: 200)
-        .alert(document.error?.error.localizedDescription ?? "Error", isPresented: $document.hasError, actions: {}, message: {
-            if let error = document.error?.error {
+        .alert(loader.error?.error.localizedDescription ?? "Error", isPresented: $loader.hasError, actions: {}, message: {
+            if let error = loader.error?.error {
                 ErrorView(error: error)
             }
         })
@@ -48,13 +48,13 @@ struct ContentView: View {
         }
 
         Task {
-            await document.load(path: url.path)
+            await loader.load(path: url.path)
         }
     }
 
     private func save() {
         Task {
-            await document.save()
+            await loader.save()
         }
     }
 }

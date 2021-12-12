@@ -13,7 +13,7 @@
 		B41BCB1627507470001A69CD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB1227507302001A69CD /* main.swift */; };
 		B41BCB1727507474001A69CD /* HashService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB1327507302001A69CD /* HashService.swift */; };
 		B41BCB19275078CE001A69CD /* NSXPCConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB18275078CE001A69CD /* NSXPCConnection.swift */; };
-		B41BCB2D275418AF001A69CD /* ConfigDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB2C275418AF001A69CD /* ConfigDocument.swift */; };
+		B41BCB2D275418AF001A69CD /* ConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCB2C275418AF001A69CD /* ConfigLoader.swift */; };
 		B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE30827504819006BCD00 /* DrProxyApp.swift */; };
 		B45AE30B27504819006BCD00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45AE30A27504819006BCD00 /* ContentView.swift */; };
 		B45AE30D2750481B006BCD00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45AE30C2750481B006BCD00 /* Assets.xcassets */; };
@@ -89,7 +89,7 @@
 		B41BCB1227507302001A69CD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B41BCB1327507302001A69CD /* HashService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashService.swift; sourceTree = "<group>"; };
 		B41BCB18275078CE001A69CD /* NSXPCConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSXPCConnection.swift; sourceTree = "<group>"; };
-		B41BCB2C275418AF001A69CD /* ConfigDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigDocument.swift; sourceTree = "<group>"; };
+		B41BCB2C275418AF001A69CD /* ConfigLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLoader.swift; sourceTree = "<group>"; };
 		B45AE30527504819006BCD00 /* Dr. Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dr. Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45AE30827504819006BCD00 /* DrProxyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrProxyApp.swift; sourceTree = "<group>"; };
 		B45AE30A27504819006BCD00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 				B45AE3172750493B006BCD00 /* AppStorage.swift */,
 				B45AE30C2750481B006BCD00 /* Assets.xcassets */,
 				B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */,
-				B41BCB2C275418AF001A69CD /* ConfigDocument.swift */,
+				B41BCB2C275418AF001A69CD /* ConfigLoader.swift */,
 				B41BCAFB2750628A001A69CD /* ConfigFile.swift */,
 				B45AE30A27504819006BCD00 /* ContentView.swift */,
 				B45AE3112750481B006BCD00 /* DrProxy.entitlements */,
@@ -415,7 +415,7 @@
 				B41BCAFC2750628A001A69CD /* ConfigFile.swift in Sources */,
 				B41BCAFE27506E1C001A69CD /* ChangePasswordView.swift in Sources */,
 				B45AE30B27504819006BCD00 /* ContentView.swift in Sources */,
-				B41BCB2D275418AF001A69CD /* ConfigDocument.swift in Sources */,
+				B41BCB2D275418AF001A69CD /* ConfigLoader.swift in Sources */,
 				B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */,
 				B4A675682754817800C8C414 /* ErrorView.swift in Sources */,
 			);
