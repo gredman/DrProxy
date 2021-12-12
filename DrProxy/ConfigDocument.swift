@@ -17,7 +17,6 @@ struct IdentifiedError: Identifiable, Equatable {
     }
 }
 
-@MainActor
 class ConfigDocument: NSObject, ObservableObject {
     @Published var file = ConfigFile() {
         didSet {
@@ -93,11 +92,11 @@ class ConfigDocument: NSObject, ObservableObject {
         do {
             let coordinator = NSFileCoordinator(filePresenter: self)
             let url = try await coordinator.coordinate(readingItemAt: url)
-            file = try ConfigFile(contentsOf: url)
+            let file = try ConfigFile(contentsOf: url)
+            await setFile(file)
             bookmarkData = try url.bookmarkData(options: .minimalBookmark)
-            savedFile = file
         } catch {
-            self.error = IdentifiedError(error: error)
+            await setError(error)
         }
     }
 
@@ -113,8 +112,20 @@ class ConfigDocument: NSObject, ObservableObject {
             try file.write(to: url2)
             savedFile = file
         } catch {
-            self.error = IdentifiedError(error: error)
+            await setError(error)
         }
+    }
+
+    @MainActor
+    func setFile(_ file: ConfigFile) {
+        self.file = file
+        self.savedFile = file
+        self.error = nil
+    }
+
+    @MainActor
+    func setError(_ error: Error) {
+        self.error = IdentifiedError(error: error)
     }
 }
 
