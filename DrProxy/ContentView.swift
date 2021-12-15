@@ -23,16 +23,7 @@ struct ContentView: View {
                     .environment(\.isEnabled, loader.hasChanges)
             }
         }
-        .toolbar(content: {
-            Text(jobState.isRunning ? "Running" : "Not running")
-                .foregroundColor(.secondary)
-            Button(action: stop) { Image(systemName: "stop.fill") }
-                .help("Stop")
-                .environment(\.isEnabled, jobState.isRunning)
-            Button(action: start) { Image(systemName: "play.fill") }
-                .help("Start")
-                .environment(\.isEnabled, !jobState.isRunning)
-        })
+        .toolbar(content: toolbar)
         .navigationSubtitle(subtitle)
         .padding()
         .frame(minHeight: 200)
@@ -48,6 +39,32 @@ struct ContentView: View {
             loader.loadedPath,
             loader.hasChanges ? "Edited" : nil
         ].compactMap { $0 }.joined(separator: " — ")
+    }
+
+    @ViewBuilder
+    private func toolbar() -> some View {
+        switch jobState.status {
+        case .stopped:
+            toolbarButtons(isRunning: false)
+        case .running:
+            toolbarButtons(isRunning: true)
+        case .error:
+            Label("Error", systemImage: "exclamationmark.triangle.fill")
+                .symbolRenderingMode(.multicolor)
+                .labelStyle(.titleAndIcon)
+        }
+    }
+
+    @ViewBuilder
+    private func toolbarButtons(isRunning: Bool) -> some View {
+        Text(isRunning ? "Running" : "Not Running")
+            .foregroundColor(.secondary)
+        Button(action: stop) { Image(systemName: "stop.fill") }
+            .help("Stop")
+            .environment(\.isEnabled, isRunning)
+        Button(action: start) { Image(systemName: "play.fill") }
+            .help("Start")
+            .environment(\.isEnabled, !isRunning)
     }
 
     private func open() {

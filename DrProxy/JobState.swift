@@ -9,13 +9,26 @@ import Foundation
 
 @MainActor
 class JobState: ObservableObject {
-    @Published private(set) var label: String
-    @Published private(set) var pid: Int? {
-        didSet {
-            isRunning = pid != nil
+    enum Status {
+        case stopped
+        case running(Int)
+        case error(Error)
+
+        static func from(pid: Int) -> Status {
+            pid > 0 ? .running(pid) : .stopped
+        }
+
+        var isRunning: Bool {
+            if case .running = self {
+                return true
+            } else {
+                return false
+            }
         }
     }
-    @Published private(set) var isRunning = false
+
+    @Published private(set) var label: String
+    @Published private(set) var status: Status = .stopped
 
     init(label: String) {
         self.label = label
@@ -29,10 +42,10 @@ class JobState: ObservableObject {
     func update() async {
         do {
             let pid = try await NSXPCConnection.launchService.getPID(label: label)
-            self.pid = pid > 0 ? pid : nil
+            status = .from(pid: pid)
         } catch {
             print("getPID failed with \(error)")
-            pid = nil
+            status = .error(error)
         }
     }
 

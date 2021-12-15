@@ -31,7 +31,7 @@ struct DrProxyApp: App {
         }
 
         Settings {
-            PreferencesView()
+            PreferencesView(jobState: jobState)
         }
     }
 
@@ -47,12 +47,22 @@ struct DrProxyApp: App {
 }
 
 private struct PreferencesView: View {
-    @AppStorage(AppStorage.jobNameKey) var jobName: String = AppStorage.jobNameDefault
+    @ObservedObject var jobState: JobState
+
+    @AppStorage(AppStorage.jobNameKey) var jobLabel: String = AppStorage.jobNameDefault
 
     var body: some View {
         Form {
-            TextField("Job Name", text: $jobName, prompt: Text(AppStorage.jobNameDefault))
+            TextField("Job Label", text: $jobLabel, prompt: Text(AppStorage.jobNameDefault))
         }
+        .onChange(of: jobLabel, perform: updateJobState)
         .padding()
+        .frame(idealWidth: 200)
+    }
+
+    private func updateJobState(_ jobLabel: String) {
+        Task {
+            await jobState.setLabel(jobLabel)
+        }
     }
 }
