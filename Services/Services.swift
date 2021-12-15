@@ -16,3 +16,17 @@ public typealias PasswordHash = NSDictionary
 @objc public protocol LaunchServiceProtocol {
     func getPID(label: String, withReply reply: @escaping (NSError?, Int) -> Void)
 }
+
+public extension LaunchServiceProtocol {
+    func getPID(label: String) async throws -> Int {
+        try await withCheckedThrowingContinuation { cont in
+            getPID(label: label) { error, pid in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else {
+                    cont.resume(returning: pid)
+                }
+            }
+        }
+    }
+}

@@ -10,12 +10,17 @@ import SwiftUI
 @main
 struct DrProxyApp: App {
     @StateObject var loader = ConfigLoader()
+    @StateObject var jobState = JobState(label: AppStorage.jobNameDefault)
+
+    @AppStorage(AppStorage.jobNameKey) var jobName = AppStorage.jobNameDefault
 
     var body: some Scene {
         WindowGroup {
-            ContentView(loader: loader)
+            ContentView(loader: loader, jobState: jobState)
                 .task {
                     await load()
+                    await jobState.setLabel(jobName)
+                    await jobState.loop()
                 }
         }
         .commands {

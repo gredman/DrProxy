@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var loader: ConfigLoader
+    @ObservedObject var jobState: JobState
 
     var body: some View {
         VStack {
@@ -23,7 +24,7 @@ struct ContentView: View {
             }
         }
         .toolbar(content: {
-            Image(systemName: "info.circle")
+            Text(jobState.pid != nil ? "Running" : "Not running")
         })
         .navigationSubtitle(!loader.hasChanges ? "" : "Edited")
         .padding()
