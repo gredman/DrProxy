@@ -64,4 +64,79 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
         reply(nil, pid)
     }
+
+    func stop(label: String, withReply reply: @escaping (NSError?) -> Void) {
+        let process = Process()
+        let stderr = Pipe()
+        process.executableURL = URL(fileURLWithPath: "/bin/sh")
+        var environment = ProcessInfo.processInfo.environment
+        if let currentPath = environment[pathKey] {
+            environment[pathKey] = currentPath + ":" + path
+        } else {
+            environment[pathKey] = path
+        }
+        process.environment = environment
+        process.arguments = ["-c", "launchctl stop \(label)"]
+        process.standardError = stderr
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            reply(error as NSError)
+            return
+        }
+
+        guard process.terminationStatus == 0 else {
+            let data = try? stderr.fileHandleForReading.readToEnd()
+            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+
+            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
+                NSLocalizedDescriptionKey: "cntlm failed",
+                "termination status": "\(process.terminationStatus)",
+                "stderr": output
+            ])
+            reply(error)
+            return
+        }
+
+        reply(nil)
+    }
+
+    func start(label: String, withReply reply: @escaping (NSError?) -> Void) {
+        let process = Process()
+        let stderr = Pipe()
+        process.executableURL = URL(fileURLWithPath: "/bin/sh")
+        var environment = ProcessInfo.processInfo.environment
+        if let currentPath = environment[pathKey] {
+            environment[pathKey] = currentPath + ":" + path
+        } else {
+            environment[pathKey] = path
+        }
+        process.environment = environment
+        process.arguments = ["-c", "launchctl start \(label)"]
+        process.standardError = stderr
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            reply(error as NSError)
+            return
+        }
+
+        guard process.terminationStatus == 0 else {
+            let data = try? stderr.fileHandleForReading.readToEnd()
+            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+
+            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
+                NSLocalizedDescriptionKey: "cntlm failed",
+                "termination status": "\(process.terminationStatus)",
+                "stderr": output
+            ])
+            reply(error)
+            return
+        }
+
+        reply(nil)
+    }
+
 }

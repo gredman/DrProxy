@@ -24,7 +24,14 @@ struct ContentView: View {
             }
         }
         .toolbar(content: {
-            Text(jobState.pid != nil ? "Running" : "Not running")
+            Text(jobState.isRunning ? "Running" : "Not running")
+                .foregroundColor(.secondary)
+            Button(action: stop) { Image(systemName: "stop.fill") }
+                .help("Stop")
+                .environment(\.isEnabled, jobState.isRunning)
+            Button(action: start) { Image(systemName: "play.fill") }
+                .help("Start")
+                .environment(\.isEnabled, !jobState.isRunning)
         })
         .navigationSubtitle(!loader.hasChanges ? "" : "Edited")
         .padding()
@@ -56,6 +63,18 @@ struct ContentView: View {
     private func save() {
         Task {
             await loader.save()
+        }
+    }
+
+    private func stop() {
+        Task {
+            await jobState.stop()
+        }
+    }
+
+    private func start() {
+        Task {
+            await jobState.start()
         }
     }
 }

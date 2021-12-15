@@ -10,7 +10,12 @@ import Foundation
 @MainActor
 class JobState: ObservableObject {
     @Published private(set) var label: String
-    @Published private(set) var pid: Int?
+    @Published private(set) var pid: Int? {
+        didSet {
+            isRunning = pid != nil
+        }
+    }
+    @Published private(set) var isRunning = false
 
     init(label: String) {
         self.label = label
@@ -32,8 +37,24 @@ class JobState: ObservableObject {
     }
 
     func loop() async {
-        for await date in Timer.stream(timeInterval: TimeInterval(0.5)) {
+        for await _ in Timer.stream(timeInterval: TimeInterval(0.5)) {
             await update()
+        }
+    }
+
+    func stop() async {
+        do {
+            try await NSXPCConnection.launchService.stop(label: label)
+        } catch {
+            print("stop failed with \(error)")
+        }
+    }
+
+    func start() async {
+        do {
+            try await NSXPCConnection.launchService.start(label: label)
+        } catch {
+            print("start failed with \(error)")
         }
     }
 }
