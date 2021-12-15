@@ -13,11 +13,9 @@ import Services
 private let pathKey = "PATH"
 private let path = "/usr/local/bin"
 
-class LaunchService: NSObject, LaunchServiceProtocol {
-    func getPID(label: String, withReply reply: @escaping (NSError?, Int) -> Void) {
+private extension Process {
+    static func launchctl(command: String, label: String) -> Process {
         let process = Process()
-        let stdout = Pipe()
-        let stderr = Pipe()
         process.executableURL = URL(fileURLWithPath: "/bin/sh")
         var environment = ProcessInfo.processInfo.environment
         if let currentPath = environment[pathKey] {
@@ -26,7 +24,28 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             environment[pathKey] = path
         }
         process.environment = environment
-        process.arguments = ["-c", "launchctl list \(label)"]
+        process.arguments = ["-c", "launchctl \(command) \(label)"]
+        return process
+    }
+}
+
+private extension NSError {
+    static func cntlmError(process: Process, stderr: Pipe) -> NSError {
+        let data = try? stderr.fileHandleForReading.readToEnd()
+        let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+        return NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
+            NSLocalizedDescriptionKey: "cntlm failed",
+            "termination status": "\(process.terminationStatus)",
+            "stderr": output
+        ])
+    }
+}
+
+class LaunchService: NSObject, LaunchServiceProtocol {
+    func getPID(label: String, withReply reply: @escaping (NSError?, Int) -> Void) {
+        let process = Process.launchctl(command: "list", label: label)
+        let stdout = Pipe()
+        let stderr = Pipe()
         process.standardOutput = stdout
         process.standardError = stderr
         var data: Data?
@@ -40,14 +59,7 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
 
         guard process.terminationStatus == 0, let data = data, let string = String(data: data, encoding: .utf8) else {
-            let data = try? stderr.fileHandleForReading.readToEnd()
-            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-
-            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "cntlm failed",
-                "termination status": "\(process.terminationStatus)",
-                "stderr": output
-            ])
+            let error = NSError.cntlmError(process: process, stderr: stderr)
             reply(error, -1)
             return
         }
@@ -66,17 +78,8 @@ class LaunchService: NSObject, LaunchServiceProtocol {
     }
 
     func stop(label: String, withReply reply: @escaping (NSError?) -> Void) {
-        let process = Process()
+        let process = Process.launchctl(command: "stop", label: label)
         let stderr = Pipe()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
-        var environment = ProcessInfo.processInfo.environment
-        if let currentPath = environment[pathKey] {
-            environment[pathKey] = currentPath + ":" + path
-        } else {
-            environment[pathKey] = path
-        }
-        process.environment = environment
-        process.arguments = ["-c", "launchctl stop \(label)"]
         process.standardError = stderr
         do {
             try process.run()
@@ -87,14 +90,7 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
 
         guard process.terminationStatus == 0 else {
-            let data = try? stderr.fileHandleForReading.readToEnd()
-            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-
-            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "cntlm failed",
-                "termination status": "\(process.terminationStatus)",
-                "stderr": output
-            ])
+            let error = NSError.cntlmError(process: process, stderr: stderr)
             reply(error)
             return
         }
@@ -103,17 +99,8 @@ class LaunchService: NSObject, LaunchServiceProtocol {
     }
 
     func start(label: String, withReply reply: @escaping (NSError?) -> Void) {
-        let process = Process()
+        let process = Process.launchctl(command: "start", label: label)
         let stderr = Pipe()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
-        var environment = ProcessInfo.processInfo.environment
-        if let currentPath = environment[pathKey] {
-            environment[pathKey] = currentPath + ":" + path
-        } else {
-            environment[pathKey] = path
-        }
-        process.environment = environment
-        process.arguments = ["-c", "launchctl start \(label)"]
         process.standardError = stderr
         do {
             try process.run()
@@ -124,19 +111,11 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
 
         guard process.terminationStatus == 0 else {
-            let data = try? stderr.fileHandleForReading.readToEnd()
-            let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-
-            let error = NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "cntlm failed",
-                "termination status": "\(process.terminationStatus)",
-                "stderr": output
-            ])
+            let error = NSError.cntlmError(process: process, stderr: stderr)
             reply(error)
             return
         }
 
         reply(nil)
     }
-
 }
