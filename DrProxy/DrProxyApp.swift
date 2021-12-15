@@ -10,16 +10,16 @@ import SwiftUI
 @main
 struct DrProxyApp: App {
     @StateObject var loader = ConfigLoader()
-    @StateObject var jobState = JobState(label: AppStorage.jobNameDefault)
+    @StateObject var jobState = JobState(label: AppStorage.jobLabelDefault)
 
-    @AppStorage(AppStorage.jobNameKey) var jobName = AppStorage.jobNameDefault
+    @AppStorage(AppStorage.jobLabelKey) var jobLabel = AppStorage.jobLabelDefault
 
     var body: some Scene {
         WindowGroup {
             ContentView(loader: loader, jobState: jobState)
                 .task {
                     await load()
-                    await jobState.setLabel(jobName)
+                    await jobState.setLabel(jobLabel)
                     await jobState.loop()
                 }
         }
@@ -49,11 +49,11 @@ struct DrProxyApp: App {
 private struct PreferencesView: View {
     @ObservedObject var jobState: JobState
 
-    @AppStorage(AppStorage.jobNameKey) var jobLabel: String = AppStorage.jobNameDefault
+    @AppStorage(AppStorage.jobLabelKey) var jobLabel: String = AppStorage.jobLabelDefault
 
     var body: some View {
         Form {
-            TextField("Job Label", text: $jobLabel, prompt: Text(AppStorage.jobNameDefault))
+            TextField("Job Label", text: $jobLabel, prompt: Text(AppStorage.jobLabelDefault))
         }
         .onChange(of: jobLabel, perform: updateJobState)
         .padding()
