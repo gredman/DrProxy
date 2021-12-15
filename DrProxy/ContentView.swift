@@ -33,7 +33,7 @@ struct ContentView: View {
                 .help("Start")
                 .environment(\.isEnabled, !jobState.isRunning)
         })
-        .navigationSubtitle(!loader.hasChanges ? "" : "Edited")
+        .navigationSubtitle(subtitle)
         .padding()
         .frame(minHeight: 200)
         .alert(loader.error?.error.localizedDescription ?? "Error", isPresented: $loader.hasError, actions: {}, message: {
@@ -41,6 +41,13 @@ struct ContentView: View {
                 ErrorView(error: error)
             }
         })
+    }
+
+    private var subtitle: String {
+        [
+            loader.loadedPath,
+            loader.hasChanges ? "Edited" : nil
+        ].compactMap { $0 }.joined(separator: " — ")
     }
 
     private func open() {

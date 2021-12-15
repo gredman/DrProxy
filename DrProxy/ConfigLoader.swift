@@ -32,6 +32,7 @@ class ConfigLoader: NSObject, ObservableObject {
     @Published var isLoaded = false
     @Published var hasChanges = false
     @Published var hasError = false
+    @Published var loadedPath: String?
 
     private var savedFile: ConfigFile? {
         didSet {
@@ -94,6 +95,7 @@ class ConfigLoader: NSObject, ObservableObject {
             let url = try await coordinator.coordinate(readingItemAt: url)
             let file = try ConfigFile(contentsOf: url)
             await setFile(file)
+            await setLoadedPath(url.path)
             bookmarkData = try url.bookmarkData(options: .minimalBookmark)
         } catch {
             await setError(error)
@@ -126,6 +128,11 @@ class ConfigLoader: NSObject, ObservableObject {
     @MainActor
     func setError(_ error: Error) {
         self.error = IdentifiedError(error: error)
+    }
+
+    @MainActor
+    func setLoadedPath(_ path: String) {
+        self.loadedPath = path
     }
 }
 
