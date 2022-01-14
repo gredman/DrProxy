@@ -83,6 +83,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F09DA7E27912F4700D7F739 /* HashService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HashService.xcconfig; sourceTree = "<group>"; };
+		7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LaunchService.xcconfig; sourceTree = "<group>"; };
 		B41BCAFB2750628A001A69CD /* ConfigFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFile.swift; sourceTree = "<group>"; };
 		B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		B41BCB03275072F7001A69CD /* HashService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = HashService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +152,7 @@
 				B41BCB1327507302001A69CD /* HashService.swift */,
 				B41BCB0B275072F7001A69CD /* Info.plist */,
 				B41BCB1227507302001A69CD /* main.swift */,
+				7F09DA7E27912F4700D7F739 /* HashService.xcconfig */,
 			);
 			path = HashService;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				B4AC06C02755DF1200C7FE16 /* Info.plist */,
 				B4AC06C92755DF4900C7FE16 /* main.swift */,
 				B4AC06CE2755DF8000C7FE16 /* LaunchService.swift */,
+				7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */,
 			);
 			path = LaunchService;
 			sourceTree = "<group>";
@@ -465,6 +469,7 @@
 /* Begin XCBuildConfiguration section */
 		B41BCB10275072F7001A69CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA7E27912F4700D7F739 /* HashService.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -476,11 +481,6 @@
 				INFOPLIST_FILE = HashService/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HashService;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.HashService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -492,6 +492,7 @@
 		};
 		B41BCB11275072F7001A69CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA7E27912F4700D7F739 /* HashService.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -503,11 +504,6 @@
 				INFOPLIST_FILE = HashService/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HashService;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.HashService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -756,6 +752,7 @@
 		};
 		B4AC06C52755DF1200C7FE16 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -767,11 +764,6 @@
 				INFOPLIST_FILE = LaunchService/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LaunchService;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.LaunchService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -784,6 +776,7 @@
 		};
 		B4AC06C62755DF1200C7FE16 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -795,11 +788,6 @@
 				INFOPLIST_FILE = LaunchService/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LaunchService;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = computer.gareth.DrProxy.LaunchService;
 				PRODUCT_NAME = "$(TARGET_NAME)";

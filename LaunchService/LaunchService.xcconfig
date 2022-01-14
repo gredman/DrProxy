@@ -1,0 +1,8 @@
+//
+//  LaunchService.xcconfig
+//  DrProxy
+//
+//  Created by Gareth Redman on 14/01/22.
+//
+
+LD_RUNPATH_SEARCH_PATHS=$(inherited) @executable_path/../../../../Frameworks
