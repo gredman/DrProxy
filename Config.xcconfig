@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  DrProxy
+//
+//  Created by Gareth Redman on 14/01/22.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+DEVELOPMENT_TEAM=UB3GT59Z2L

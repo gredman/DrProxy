@@ -85,6 +85,7 @@
 /* Begin PBXFileReference section */
 		7F09DA7E27912F4700D7F739 /* HashService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HashService.xcconfig; sourceTree = "<group>"; };
 		7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LaunchService.xcconfig; sourceTree = "<group>"; };
+		7F09DA83279133CD00D7F739 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B41BCAFB2750628A001A69CD /* ConfigFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFile.swift; sourceTree = "<group>"; };
 		B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		B41BCB03275072F7001A69CD /* HashService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = HashService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +161,7 @@
 		B45AE2FC27504819006BCD00 = {
 			isa = PBXGroup;
 			children = (
+				7F09DA83279133CD00D7F739 /* Config.xcconfig */,
 				B45AE30727504819006BCD00 /* DrProxy */,
 				B41BCB04275072F7001A69CD /* HashService */,
 				B4AC06A52755DE5B00C7FE16 /* Services */,
@@ -475,7 +477,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HashService/Info.plist;
@@ -498,7 +499,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HashService/Info.plist;
@@ -633,6 +633,7 @@
 		};
 		B45AE3152750481B006BCD00 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA83279133CD00D7F739 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -642,7 +643,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DrProxy/Preview Content\"";
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -661,6 +661,7 @@
 		};
 		B45AE3162750481B006BCD00 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F09DA83279133CD00D7F739 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -670,7 +671,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DrProxy/Preview Content\"";
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -758,7 +758,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LaunchService/Info.plist;
@@ -782,7 +781,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UB3GT59Z2L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LaunchService/Info.plist;
