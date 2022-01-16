@@ -11,7 +11,7 @@ import ServiceManagement
 import Services
 
 private let pathKey = "PATH"
-private let path = "/usr/local/bin"
+private let path = "/usr/local/bin:/opt/homebrew/bin"
 
 class HashService: NSObject, HashServiceProtocol {
     func computeHash(domain: String, username: String, password: String, withReply reply: @escaping (NSError?, PasswordHash?) -> Void) {
