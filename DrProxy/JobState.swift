@@ -13,6 +13,8 @@ class JobState: ObservableObject {
         case stopped
         case running(Int)
         case error(Error)
+        case stopping
+        case starting
 
         static func from(pid: Int) -> Status {
             pid > 0 ? .running(pid) : .stopped
@@ -23,6 +25,21 @@ class JobState: ObservableObject {
                 return true
             } else {
                 return false
+            }
+        }
+        
+        var description: String {
+            switch self {
+            case .stopped:
+                return "Not running"
+            case .running:
+                return "Running"
+            case .error:
+                return "Error"
+            case .stopping:
+                return "Stopping"
+            case .starting:
+                return "Starting"
             }
         }
     }
@@ -42,7 +59,12 @@ class JobState: ObservableObject {
     func update() async {
         do {
             let pid = try await NSXPCConnection.launchService.getPID(label: label)
-            status = .from(pid: pid)
+            let newStatus = Status.from(pid: pid)
+            if case .running = newStatus, case .stopping = status {
+                // still running, but we are stopping, so ignore
+            } else {
+                status = newStatus
+            }
         } catch {
             print("getPID failed with \(error)")
             status = .error(error)
@@ -57,6 +79,7 @@ class JobState: ObservableObject {
 
     func stop() async {
         do {
+            status = .stopping
             try await NSXPCConnection.launchService.stop(label: label)
         } catch {
             print("stop failed with \(error)")
@@ -65,6 +88,7 @@ class JobState: ObservableObject {
 
     func start() async {
         do {
+            status = .starting
             try await NSXPCConnection.launchService.start(label: label)
         } catch {
             print("start failed with \(error)")

@@ -43,28 +43,25 @@ struct ContentView: View {
 
     @ViewBuilder
     private func toolbar() -> some View {
-        switch jobState.status {
-        case .stopped:
-            toolbarButtons(isRunning: false)
-        case .running:
-            toolbarButtons(isRunning: true)
-        case .error:
+        if case .error = jobState.status {
             Label("Error", systemImage: "exclamationmark.triangle.fill")
                 .symbolRenderingMode(.multicolor)
                 .labelStyle(.titleAndIcon)
+        } else {
+            toolbarButtons(status: jobState.status)
         }
     }
 
     @ViewBuilder
-    private func toolbarButtons(isRunning: Bool) -> some View {
-        Text(isRunning ? "Running" : "Not Running")
+    private func toolbarButtons(status: JobState.Status) -> some View {
+        Text(status.description)
             .foregroundColor(.secondary)
         Button(action: stop) { Image(systemName: "stop.fill") }
             .help("Stop")
-            .environment(\.isEnabled, isRunning)
+            .environment(\.isEnabled, status.isRunning)
         Button(action: start) { Image(systemName: "play.fill") }
             .help("Start")
-            .environment(\.isEnabled, !isRunning)
+            .environment(\.isEnabled, !status.isRunning)
     }
 
     private func open() {
