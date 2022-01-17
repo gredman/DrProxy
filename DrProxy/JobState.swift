@@ -21,9 +21,10 @@ class JobState: ObservableObject {
         }
 
         var isRunning: Bool {
-            if case .running = self {
+            switch self {
+            case .running, .stopping:
                 return true
-            } else {
+            default:
                 return false
             }
         }
