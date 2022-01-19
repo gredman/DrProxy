@@ -30,6 +30,7 @@ class ConfigLoader: NSObject, ObservableObject {
     }
 
     @Published var isLoaded = false
+    @Published var hasBookmark = false
     @Published var hasChanges = false
     @Published var hasError = false
     @Published var loadedPath: String?
@@ -47,6 +48,10 @@ class ConfigLoader: NSObject, ObservableObject {
 
     private func updateHasChanges() {
         hasChanges = isLoaded && savedFile != file
+    }
+
+    private func updateHasBookmark() {
+        hasBookmark = bookmarkData != nil
     }
 
     private func updateHasError() {
@@ -72,6 +77,7 @@ class ConfigLoader: NSObject, ObservableObject {
     }
 
     func load() async {
+        updateHasBookmark()
         guard let bookmarkData = bookmarkData else {
             return
         }
@@ -81,7 +87,7 @@ class ConfigLoader: NSObject, ObservableObject {
             let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
             await load(url: url)
         } catch {
-            self.error = IdentifiedError(error: error)
+            await setError(error)
         }
     }
 
@@ -96,7 +102,7 @@ class ConfigLoader: NSObject, ObservableObject {
             let file = try ConfigFile(contentsOf: url)
             await setFile(file)
             await setLoadedPath(url.path)
-            bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            try await setBookmarkData(url.bookmarkData(options: .minimalBookmark))
         } catch {
             await setError(error)
         }
@@ -116,6 +122,11 @@ class ConfigLoader: NSObject, ObservableObject {
         } catch {
             await setError(error)
         }
+    }
+
+    @MainActor
+    func setBookmarkData(_ data: Data) {
+        self.bookmarkData = data
     }
 
     @MainActor

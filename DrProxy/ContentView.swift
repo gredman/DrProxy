@@ -12,6 +12,24 @@ struct ContentView: View {
     @ObservedObject var jobState: JobState
 
     var body: some View {
+        ZStack {
+            mainContentView
+                .opacity(loader.hasBookmark ? 1 : 0)
+            emptyView
+                .opacity(loader.hasBookmark ? 0 : 1)
+        }
+        .toolbar(content: toolbar)
+        .navigationSubtitle(subtitle)
+        .padding()
+        .frame(minHeight: 200)
+        .alert(loader.error?.error.localizedDescription ?? "Error", isPresented: $loader.hasError, actions: {}, message: {
+            if let error = loader.error?.error {
+                ErrorView(error: error)
+            }
+        })
+    }
+
+    private var mainContentView: some View {
         VStack {
             EditorView(loader: loader)
                 .environment(\.isEnabled, loader.isLoaded)
@@ -23,15 +41,15 @@ struct ContentView: View {
                     .environment(\.isEnabled, loader.hasChanges)
             }
         }
-        .toolbar(content: toolbar)
-        .navigationSubtitle(subtitle)
-        .padding()
-        .frame(minHeight: 200)
-        .alert(loader.error?.error.localizedDescription ?? "Error", isPresented: $loader.hasError, actions: {}, message: {
-            if let error = loader.error?.error {
-                ErrorView(error: error)
-            }
-        })
+    }
+
+    private var emptyView: some View {
+        VStack(spacing: 16) {
+            Text("Hello, my name is Dr. Proxy").font(.headline)
+            Text("I hear you are having trouble with CNTLM. Can I take a look at it?")
+            Button("Open CNTLM Config", action: open)
+                .buttonStyle(.borderedProminent)
+        }
     }
 
     private var subtitle: String {
