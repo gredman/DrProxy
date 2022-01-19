@@ -7,9 +7,25 @@
 
 import SwiftUI
 
+private extension Binding where Value == IdentifiedError? {
+    var hasValueBinding: Binding<Bool> {
+        Binding<Bool>(get: {
+            switch wrappedValue {
+            case .some: return true
+            case .none: return false
+            }
+        }, set: { newValue in
+            assert(!newValue)
+            wrappedValue = nil
+        })
+    }
+}
+
 struct ContentView: View {
     @ObservedObject var loader: ConfigLoader
     @ObservedObject var jobState: JobState
+
+    @State var presentedError: IdentifiedError?
 
     var body: some View {
         ZStack {
@@ -22,11 +38,16 @@ struct ContentView: View {
         .navigationSubtitle(subtitle)
         .padding()
         .frame(minHeight: 200)
-        .alert(loader.error?.error.localizedDescription ?? "Error", isPresented: $loader.hasError, actions: {}, message: {
-            if let error = loader.error?.error {
+        .alert(presentedError?.error.localizedDescription ?? "Error", isPresented: $presentedError.hasValueBinding, actions: {}, message: {
+            if let error = presentedError?.error {
                 ErrorView(error: error)
             }
         })
+        .onChange(of: loader.error) { newValue in
+            if let error = newValue {
+                showError(error)
+            }
+        }
     }
 
     private var mainContentView: some View {
@@ -61,13 +82,23 @@ struct ContentView: View {
 
     @ViewBuilder
     private func toolbar() -> some View {
-        if case .error = jobState.status {
-            Label("Error", systemImage: "exclamationmark.triangle.fill")
-                .symbolRenderingMode(.multicolor)
-                .labelStyle(.titleAndIcon)
+        if case let .error(error) = jobState.status {
+            Button(action: { showError(error) }) {
+                Label("Error", systemImage: "exclamationmark.triangle.fill")
+                    .symbolRenderingMode(.multicolor)
+                    .labelStyle(.titleAndIcon)
+            }
         } else {
             toolbarButtons(status: jobState.status)
         }
+    }
+
+    private func showError(_ error: Error) {
+        showError(IdentifiedError(error: error))
+    }
+
+    private func showError(_ error: IdentifiedError) {
+        presentedError = error
     }
 
     @ViewBuilder
