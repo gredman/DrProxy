@@ -94,9 +94,14 @@ struct ConfigFile: Equatable {
         set { self["PassNTLMv2"] = newValue }
     }
 
-    var proxy: String {
-        get { self["Proxy"] }
-        set { self["Proxy"] = newValue }
+    var proxy1: String {
+        get { get(name: "Proxy", index: 0) }
+        set { set(name: "Proxy", index: 0, value: newValue) }
+    }
+
+    var proxy2: String {
+        get { get(name: "Proxy", index: 1) }
+        set { set(name: "Proxy", index: 1, value: newValue) }
     }
 
     var noProxy: String {
@@ -116,30 +121,50 @@ struct ConfigFile: Equatable {
 
     subscript(name: String) -> String {
         get {
-            for line in lines {
-                if case let .option(name: n, space: _, value: value) = line.content, n == name {
-                    return value
-                }
-            }
-            return ""
+            get(name: name)
         }
         set {
-            var index: Int? = nil
-            var space: String? = nil
-            for i in lines.indices {
-                if case let .option(name: n, space: s, value: _) = lines[i].content, n == name {
-                    index = i
-                    space = s
-                    break
+            set(name: name, value: newValue)
+        }
+    }
+
+    private func get(name: String, index: Int = 0) -> String {
+        var skip = index
+
+        for line in lines {
+            if case let .option(name: n, space: _, value: value) = line.content, n == name {
+                if skip == 0 {
+                    return value
+                } else {
+                    skip -= 1
                 }
             }
-            if let index = index {
-                var updated = lines[index]
-                updated.content = .option(name: name, space: space ?? "\n", value: newValue)
-                lines[index] = updated
-            } else {
-                lines.append(.option(name: name, space: "\t", value: newValue))
+        }
+        return ""
+    }
+
+    private mutating func set(name: String, index: Int = 0, value: String) {
+        var lineIndex: Int? = nil
+        var space: String? = nil
+
+        var skip = index
+        for i in lines.indices {
+            if case let .option(name: n, space: s, value: _) = lines[i].content, n == name {
+                if skip == 0 {
+                    lineIndex = i
+                    space = s
+                    break
+                } else {
+                    skip -= 1
+                }
             }
+        }
+        if let lineIndex = lineIndex {
+            var updated = lines[lineIndex]
+            updated.content = .option(name: name, space: space ?? "\n", value: value)
+            lines[lineIndex] = updated
+        } else {
+            lines.append(.option(name: name, space: "\t", value: value))
         }
     }
 

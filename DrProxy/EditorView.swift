@@ -41,7 +41,8 @@ struct EditorView: View {
                 }
             }
             Section(header: Text("Proxy")) {
-                TextField("Upstream", text: $loader.file.proxy)
+                TextField("Upstream", text: $loader.file.proxy1)
+                TextField("Alternate", text: $loader.file.proxy2)
                 TextField("Bypass", text: $loader.file.noProxy)
                 TextField("Port", text: $loader.file.listen)
                 Toggle("Gateway", isOn: Binding($loader.file.gateway))
