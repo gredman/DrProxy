@@ -20,12 +20,12 @@ struct IdentifiedError: Identifiable, Equatable {
 class ConfigLoader: NSObject, ObservableObject {
     @Published var file = ConfigFile() {
         didSet {
-            updateHasChanges()
+            Task { await updateHasChanges() }
         }
     }
     @Published var error: IdentifiedError? {
         didSet {
-            updateHasError()
+            Task { await updateHasError() }
         }
     }
 
@@ -37,25 +37,11 @@ class ConfigLoader: NSObject, ObservableObject {
 
     private var savedFile: ConfigFile? {
         didSet {
-            updateIsLoaded()
-            updateHasChanges()
+            Task {
+                await updateIsLoaded()
+                await updateHasChanges()
+            }
         }
-    }
-
-    private func updateIsLoaded() {
-        isLoaded = savedFile != nil
-    }
-
-    private func updateHasChanges() {
-        hasChanges = isLoaded && savedFile != file
-    }
-
-    private func updateHasBookmark() {
-        hasBookmark = bookmarkData != nil
-    }
-
-    private func updateHasError() {
-        hasError = error != nil
     }
 
     private var bookmarkData: Data? {
@@ -64,6 +50,7 @@ class ConfigLoader: NSObject, ObservableObject {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: AppStorage.configBookmarkKey)
+            Task { await updateHasBookmark() }
         }
     }
 
@@ -77,7 +64,7 @@ class ConfigLoader: NSObject, ObservableObject {
     }
 
     func load() async {
-        updateHasBookmark()
+        await updateHasBookmark()
         guard let bookmarkData = bookmarkData else {
             return
         }
@@ -102,7 +89,7 @@ class ConfigLoader: NSObject, ObservableObject {
             let file = try ConfigFile(contentsOf: url)
             await setFile(file)
             await setLoadedPath(url.path)
-            try await setBookmarkData(url.bookmarkData(options: .minimalBookmark))
+            bookmarkData = try url.bookmarkData(options: .minimalBookmark)
         } catch {
             await setError(error)
         }
@@ -125,11 +112,6 @@ class ConfigLoader: NSObject, ObservableObject {
     }
 
     @MainActor
-    func setBookmarkData(_ data: Data) {
-        self.bookmarkData = data
-    }
-
-    @MainActor
     func setFile(_ file: ConfigFile) {
         self.file = file
         self.savedFile = file
@@ -144,6 +126,26 @@ class ConfigLoader: NSObject, ObservableObject {
     @MainActor
     func setLoadedPath(_ path: String) {
         self.loadedPath = path
+    }
+
+    @MainActor
+    private func updateIsLoaded() {
+        isLoaded = savedFile != nil
+    }
+
+    @MainActor
+    private func updateHasChanges() {
+        hasChanges = isLoaded && savedFile != file
+    }
+
+    @MainActor
+    private func updateHasBookmark() {
+        hasBookmark = bookmarkData != nil
+    }
+
+    @MainActor
+    private func updateHasError() {
+        hasError = error != nil
     }
 }
 
