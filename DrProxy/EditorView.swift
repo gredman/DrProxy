@@ -41,10 +41,10 @@ struct EditorView: View {
                 }
             }
             Section(header: Text("Proxy")) {
-                TextField("Upstream", text: $loader.file.proxy1)
-                TextField("Alternate", text: $loader.file.proxy2)
-                TextField("Bypass", text: $loader.file.noProxy)
-                TextField("Port", text: $loader.file.listen)
+                TextField("Upstream", text: $loader.file.proxy1, prompt: Text("webproxy"))
+                TextField("Alternate", text: $loader.file.proxy2, prompt: Text("webproxy-alt"))
+                TextField("Bypass", text: $loader.file.noProxy, prompt: Text("localhost"))
+                TextField("Port", text: $loader.file.listen, prompt: Text("3128"))
                 Toggle("Gateway", isOn: Binding($loader.file.gateway))
             }
         }
