@@ -57,7 +57,7 @@ private struct PreferencesView: View {
         }
         .onChange(of: jobLabel, perform: updateJobState)
         .padding()
-        .frame(idealWidth: 200)
+        .frame(width: 400)
     }
 
     private func updateJobState(_ jobLabel: String) {
