@@ -15,4 +15,5 @@ jobs:
       - name: Build
         env:
           ARCHIVE_PATH: archive
-        run: xcodebuild archive -archivePath ${ARCHIVE_PATH}
+          SCHEME: DrProxy
+        run: xcodebuild archive -scheme ${SCHEME} -archivePath ${ARCHIVE_PATH}
