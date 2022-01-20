@@ -1,0 +1,19 @@
+name: Archive
+
+on:
+  push:
+	branches: [ actions ]
+
+jobs:
+  build:
+	name: Build archive
+	runs-on: macos-latest
+
+	steps:
+	  - name: Checkout
+		uses: actions/checkout@v2
+	  - name: Build
+		env:
+		  archivePath: archive
+		run: |
+		  xcodebuild archive -archivePath ${{ archivePath }} | xcpretty && exit ${PIPESTATUS[0]}
