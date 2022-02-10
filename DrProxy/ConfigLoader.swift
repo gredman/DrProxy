@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+import os
+
+private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: #fileID)
+
 struct IdentifiedError: Identifiable, Equatable {
     let error: Error
     let id = UUID()
@@ -69,9 +73,14 @@ class ConfigLoader: NSObject, ObservableObject {
             return
         }
 
+        log.debug("loading config file from bookmark data")
         do {
             var isStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+            if isStale {
+                log.warning("bookmark data is stale on load -- updating it")
+                self.bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            }
             await load(url: url)
         } catch {
             await setError(error)
@@ -100,6 +109,7 @@ class ConfigLoader: NSObject, ObservableObject {
             var isStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData!, bookmarkDataIsStale: &isStale)
             if isStale {
+                log.warning("bookmark data is stale on load -- updating it")
                 bookmarkData = try url.bookmarkData(options: .minimalBookmark)
             }
             let coordinator = NSFileCoordinator(filePresenter: self)
@@ -153,7 +163,18 @@ extension ConfigLoader: NSFilePresenter {
     var presentedItemURL: URL? {
         guard let bookmarkData = bookmarkData else { return nil}
         var isStale = false
-        return try? URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+        let url = try? URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+
+        if isStale, let url = url {
+            log.warning("bookmark data is stale in file presenter getter -- updating it")
+            do {
+                self.bookmarkData = try url.bookmarkData(options: .minimalBookmark)
+            } catch {
+                log.error("couldn't get updated bookmark data")
+            }
+        }
+
+        return url
     }
 
     var presentedItemOperationQueue: OperationQueue {
