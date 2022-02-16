@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct DrProxyApp: App {
+struct DrProxyApp: App, Sendable {
     @StateObject var loader = ConfigLoader()
     @StateObject var jobState = JobState(label: AppStorage.jobLabelDefault)
 
@@ -46,7 +46,7 @@ struct DrProxyApp: App {
     }
 }
 
-private struct PreferencesView: View {
+private struct PreferencesView: View, Sendable {
     @ObservedObject var jobState: JobState
 
     @AppStorage(AppStorage.jobLabelKey) var jobLabel: String = AppStorage.jobLabelDefault

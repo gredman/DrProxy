@@ -21,7 +21,7 @@ private extension Binding where Value == IdentifiedError? {
     }
 }
 
-struct ContentView: View {
+struct ContentView: View, Sendable {
     @ObservedObject var loader: ConfigLoader
     @ObservedObject var jobState: JobState
 

@@ -10,8 +10,9 @@ import SwiftUI
 import Services
 import HashService
 
+// struct triggers warnings when conforming to Sendable as of Xcode 13.3b2
 struct ChangePasswordView: View {
-    var configFile: Binding<ConfigFile>
+    @Binding var configFile: ConfigFile
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -35,8 +36,8 @@ struct ChangePasswordView: View {
         }
         .onSubmit(updatePassword)
         .onAppear(perform: {
-            self.domain = configFile.domain.wrappedValue
-            self.username = configFile.username.wrappedValue
+            self.domain = configFile.domain
+            self.username = configFile.username
         })
         .alert(error?.localizedDescription ?? "Error", isPresented: $hasError, actions: {}, message: {
             if let error = error {
@@ -79,12 +80,12 @@ struct ChangePasswordView: View {
             }
         }
 
-        configFile.domain.wrappedValue = domain
-        configFile.username.wrappedValue = username
+        configFile.domain = domain
+        configFile.username = username
 
-        configFile.passLM.wrappedValue = hash.passLM ?? ""
-        configFile.passNT.wrappedValue = hash.passNT ?? ""
-        configFile.passNTLMv2.wrappedValue = hash.passNTLMv2 ?? ""
+        configFile.passLM = hash.passLM ?? ""
+        configFile.passNT = hash.passNT ?? ""
+        configFile.passNTLMv2 = hash.passNTLMv2 ?? ""
 
         presentationMode.wrappedValue.dismiss()
     }
