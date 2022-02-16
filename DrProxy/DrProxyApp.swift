@@ -10,9 +10,13 @@ import SwiftUI
 @main
 struct DrProxyApp: App, Sendable {
     @StateObject var loader = ConfigLoader()
-    @StateObject var jobState = JobState(label: AppStorage.jobLabelDefault)
+    @StateObject var jobState: JobState
 
     @AppStorage(AppStorage.jobLabelKey) var jobLabel = AppStorage.jobLabelDefault
+
+    init() {
+        _jobState = StateObject(wrappedValue: JobState(label: AppStorage.jobLabelDefault))
+    }
 
     var body: some Scene {
         WindowGroup {
