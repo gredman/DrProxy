@@ -43,6 +43,24 @@ private extension NSError {
 
 class LaunchService: NSObject, LaunchServiceProtocol {
     func getPID(label: String, withReply reply: @escaping (NSError?, Int) -> Void) {
+        let result = getPID(label: label)
+        switch result {
+        case let .failure(error):
+            reply(error, -1)
+        case let .success(pid):
+            reply(nil, pid)
+        }
+    }
+
+    func stop(label: String, withReply reply: @escaping (NSError?) -> Void) {
+        reply(stop(label: label))
+    }
+
+    func start(label: String, withReply reply: @escaping (NSError?) -> Void) {
+        reply(start(label: label))
+    }
+
+    private func getPID(label: String) -> Result<Int, NSError> {
         let process = Process.launchctl(command: "list", label: label)
         let stdout = Pipe()
         let stderr = Pipe()
@@ -54,14 +72,12 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             process.waitUntilExit()
             data = try stdout.fileHandleForReading.readToEnd()
         } catch {
-            reply(error as NSError, -1)
-            return
+            return .failure(error as NSError)
         }
 
         guard process.terminationStatus == 0, let data = data, let string = String(data: data, encoding: .utf8) else {
             let error = NSError.cntlmError(process: process, stderr: stderr)
-            reply(error, -1)
-            return
+            return .failure(error)
         }
 
         let regex = try! NSRegularExpression(pattern: #"^\s+"PID" = (\d+);$"#, options: [])
@@ -74,10 +90,11 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             let string = String(line[Range(match.range(at: 1), in: line)!])
             pid = Int(string) ?? pid
         }
-        reply(nil, pid)
+        // TODO: check pid
+        return .success(pid)
     }
 
-    func stop(label: String, withReply reply: @escaping (NSError?) -> Void) {
+    private func stop(label: String) -> NSError? {
         let process = Process.launchctl(command: "stop", label: label)
         let stderr = Pipe()
         process.standardError = stderr
@@ -85,20 +102,17 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             try process.run()
             process.waitUntilExit()
         } catch {
-            reply(error as NSError)
-            return
+            return error as NSError
         }
 
         guard process.terminationStatus == 0 else {
-            let error = NSError.cntlmError(process: process, stderr: stderr)
-            reply(error)
-            return
+            return NSError.cntlmError(process: process, stderr: stderr)
         }
 
-        reply(nil)
+        return nil
     }
 
-    func start(label: String, withReply reply: @escaping (NSError?) -> Void) {
+    private func start(label: String) -> NSError? {
         let process = Process.launchctl(command: "start", label: label)
         let stderr = Pipe()
         process.standardError = stderr
@@ -106,16 +120,13 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             try process.run()
             process.waitUntilExit()
         } catch {
-            reply(error as NSError)
-            return
+            return error as NSError
         }
 
         guard process.terminationStatus == 0 else {
-            let error = NSError.cntlmError(process: process, stderr: stderr)
-            reply(error)
-            return
+            return NSError.cntlmError(process: process, stderr: stderr)
         }
 
-        reply(nil)
+        return nil
     }
 }
