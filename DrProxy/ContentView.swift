@@ -105,12 +105,17 @@ struct ContentView: View {
     private func toolbarButtons(status: JobState.Status) -> some View {
         Text(status.description)
             .foregroundColor(.secondary)
-        Button(action: stop) { Image(systemName: "stop.fill") }
-            .help("Stop")
-            .environment(\.isEnabled, status.isRunning)
-        Button(action: start) { Image(systemName: "play.fill") }
-            .help("Start")
-            .environment(\.isEnabled, !status.isRunning)
+        Group {
+            Button(action: restart) { Image(systemName: "arrow.clockwise") }
+                .help("Restart")
+                .environment(\.isEnabled, status.isRunning)
+            Button(action: stop) { Image(systemName: "stop") }
+                .help("Stop")
+                .environment(\.isEnabled, status.isRunning)
+            Button(action: start) { Image(systemName: "play") }
+                .help("Start")
+                .environment(\.isEnabled, status.isStopped)
+        }.symbolVariant(.fill)
     }
 
     private func open() {
@@ -145,6 +150,12 @@ struct ContentView: View {
     private func start() {
         Task {
             await jobState.start()
+        }
+    }
+
+    private func restart() {
+        Task {
+            await jobState.restart()
         }
     }
 }

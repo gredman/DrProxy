@@ -15,6 +15,7 @@ class JobState: ObservableObject {
         case error(Error)
         case stopping
         case starting
+        case restarting
 
         static func from(pid: Int) -> Status {
             pid > 0 ? .running(pid) : .stopped
@@ -28,7 +29,16 @@ class JobState: ObservableObject {
                 return false
             }
         }
-        
+
+        var isStopped: Bool {
+            switch self {
+            case .stopped, .error:
+                return true
+            default:
+                return false
+            }
+        }
+
         var description: String {
             switch self {
             case .stopped:
@@ -41,6 +51,8 @@ class JobState: ObservableObject {
                 return "Stopping"
             case .starting:
                 return "Starting"
+            case .restarting:
+                return "Restarting…"
             }
         }
     }
@@ -93,6 +105,15 @@ class JobState: ObservableObject {
             try await NSXPCConnection.launchService.start(label: label)
         } catch {
             print("start failed with \(error)")
+        }
+    }
+
+    func restart() async {
+        do {
+            status = .restarting
+            try await NSXPCConnection.launchService.restart(label: label)
+        } catch {
+            print("restart failed with \(error)")
         }
     }
 }

@@ -33,10 +33,16 @@ private extension NSError {
     static func cntlmError(process: Process, stderr: Pipe) -> NSError {
         let data = try? stderr.fileHandleForReading.readToEnd()
         let output = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-        return NSError(domain: "computer.gareth.DrProxy.HashService", code: -1, userInfo: [
+        return NSError(domain: "computer.gareth.DrProxy.LaunchService", code: -1, userInfo: [
             NSLocalizedDescriptionKey: "cntlm failed",
             "termination status": "\(process.terminationStatus)",
             "stderr": output
+        ])
+    }
+
+    static func kqueueError(description: String) -> NSError {
+        return NSError(domain: "computer.gareth.DrProxy.LaunchService", code: -1, userInfo: [
+            NSLocalizedDescriptionKey: description
         ])
     }
 }
@@ -58,6 +64,10 @@ class LaunchService: NSObject, LaunchServiceProtocol {
 
     func start(label: String, withReply reply: @escaping (NSError?) -> Void) {
         reply(start(label: label))
+    }
+
+    func restart(label: String, withReply reply: @escaping (NSError?) -> Void) {
+        reply(restart(label: label))
     }
 
     private func getPID(label: String) -> Result<Int, NSError> {
@@ -128,5 +138,45 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
 
         return nil
+    }
+
+    private func restart(label: String) -> NSError? {
+        let pidResult = getPID(label: label)
+        if case let .failure(error) = pidResult {
+            return error
+        }
+        let pid = try! pidResult.get()
+
+        if let error = stop(label: label) {
+            return error
+        }
+
+        let kq = kqueue()
+        guard kq >= 0 else {
+            return NSError.kqueueError(description: "failed to open kqueue")
+        }
+        defer {
+            close(kq)
+        }
+
+        var changelist = kevent()
+        changelist.ident = UInt(pid)
+        changelist.filter = Int16(EVFILT_PROC)
+        changelist.flags = UInt16(EV_ADD) | UInt16(EV_ONESHOT)
+        changelist.fflags = UInt32(NOTE_EXIT)
+        let nchanges: Int32 = 1
+
+        var eventlist = kevent()
+        let nevents: Int32 = 1
+
+        var timeout = timespec()
+        timeout.tv_sec = 30
+
+        let events = kevent(kq, &changelist, nchanges, &eventlist, nevents, &timeout)
+        guard events == 1 else {
+            return NSError.kqueueError(description: "kevent timed out waiting for \(label) with pid \(pid) to exit")
+        }
+
+        return start(label: label)
     }
 }

@@ -17,6 +17,7 @@ public typealias PasswordHash = NSDictionary
     func getPID(label: String, withReply reply: @escaping (NSError?, Int) -> Void)
     func stop(label: String, withReply reply: @escaping (NSError?) -> Void)
     func start(label: String, withReply reply: @escaping (NSError?) -> Void)
+    func restart(label: String, withReply reply: @escaping (NSError?) -> Void)
 }
 
 public extension LaunchServiceProtocol {
@@ -47,6 +48,18 @@ public extension LaunchServiceProtocol {
     func start(label: String) async throws {
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             start(label: label) { error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else {
+                    cont.resume()
+                }
+            }
+        }
+    }
+
+    func restart(label: String) async throws {
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            restart(label: label) { error in
                 if let error = error {
                     cont.resume(throwing: error)
                 } else {
