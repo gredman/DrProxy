@@ -105,6 +105,14 @@ class LaunchService: NSObject, LaunchServiceProtocol {
     }
 
     private func stop(label: String) -> NSError? {
+        // get current pid
+        let pidResult = getPID(label: label)
+        if case let .failure(error) = pidResult {
+            return error
+        }
+        let pid = try! pidResult.get()
+
+        // launchctl stop
         let process = Process.launchctl(command: "stop", label: label)
         let stderr = Pipe()
         process.standardError = stderr
@@ -117,6 +125,11 @@ class LaunchService: NSObject, LaunchServiceProtocol {
 
         guard process.terminationStatus == 0 else {
             return NSError.cntlmError(process: process, stderr: stderr)
+        }
+
+        // wait for underlying pid to exit
+        if let error = waitForExit(pid: pid) {
+            return error
         }
 
         return nil
@@ -141,16 +154,10 @@ class LaunchService: NSObject, LaunchServiceProtocol {
     }
 
     private func restart(label: String) -> NSError? {
-        let pidResult = getPID(label: label)
-        if case let .failure(error) = pidResult {
-            return error
-        }
-        let pid = try! pidResult.get()
+        stop(label: label) ?? start(label: label)
+    }
 
-        if let error = stop(label: label) {
-            return error
-        }
-
+    private func waitForExit(pid: Int) -> NSError? {
         let kq = kqueue()
         guard kq >= 0 else {
             return NSError.kqueueError(description: "failed to open kqueue")
@@ -174,9 +181,9 @@ class LaunchService: NSObject, LaunchServiceProtocol {
 
         let events = kevent(kq, &changelist, nchanges, &eventlist, nevents, &timeout)
         guard events == 1 else {
-            return NSError.kqueueError(description: "kevent timed out waiting for \(label) with pid \(pid) to exit")
+            return NSError.kqueueError(description: "kevent timed out waiting for pid \(pid) to exit")
         }
 
-        return start(label: label)
+        return nil
     }
 }
