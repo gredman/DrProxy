@@ -66,10 +66,6 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         reply(start(label: label))
     }
 
-    func restart(label: String, withReply reply: @escaping (NSError?) -> Void) {
-        reply(restart(label: label))
-    }
-
     private func getPID(label: String) -> Result<Int, NSError> {
         let process = Process.launchctl(command: "list", label: label)
         let stdout = Pipe()
@@ -151,10 +147,6 @@ class LaunchService: NSObject, LaunchServiceProtocol {
         }
 
         return nil
-    }
-
-    private func restart(label: String) -> NSError? {
-        stop(label: label) ?? start(label: label)
     }
 
     private func waitForExit(pid: Int) -> NSError? {

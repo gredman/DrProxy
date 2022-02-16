@@ -23,7 +23,7 @@ class JobState: ObservableObject {
 
         var isRunning: Bool {
             switch self {
-            case .running, .stopping:
+            case .running:
                 return true
             default:
                 return false
@@ -48,9 +48,9 @@ class JobState: ObservableObject {
             case .error:
                 return "Error"
             case .stopping:
-                return "Stopping"
+                return "Stopping…"
             case .starting:
-                return "Starting"
+                return "Starting…"
             case .restarting:
                 return "Restarting…"
             }
@@ -73,8 +73,11 @@ class JobState: ObservableObject {
         do {
             let pid = try await NSXPCConnection.launchService.getPID(label: label)
             let newStatus = Status.from(pid: pid)
+
             if case .running = newStatus, case .stopping = status {
                 // still running, but we are stopping, so ignore
+            } else if case .stopped = newStatus, case .starting = status {
+                // still stopped, but we are starting, so ignore
             } else {
                 status = newStatus
             }
@@ -96,6 +99,7 @@ class JobState: ObservableObject {
             try await NSXPCConnection.launchService.stop(label: label)
         } catch {
             print("stop failed with \(error)")
+            status = .error(error)
         }
     }
 
@@ -105,15 +109,19 @@ class JobState: ObservableObject {
             try await NSXPCConnection.launchService.start(label: label)
         } catch {
             print("start failed with \(error)")
+            status = .error(error)
         }
     }
 
     func restart() async {
         do {
-            status = .restarting
-            try await NSXPCConnection.launchService.restart(label: label)
+            status = .stopping
+            try await NSXPCConnection.launchService.stop(label: label)
+            status = .starting
+            try await NSXPCConnection.launchService.start(label: label)
         } catch {
             print("restart failed with \(error)")
+            status = .error(error)
         }
     }
 }
