@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct ConfigFile: Equatable {
+struct ConfigFile: Equatable, Sendable {
     private var lines: [Line]
 
-    private struct Line: Equatable, Identifiable {
+    private struct Line: Equatable, Identifiable, Sendable {
         let id: UUID
         var content: Content
 
