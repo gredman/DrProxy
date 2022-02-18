@@ -26,12 +26,18 @@ struct DrProxyApp: App, Sendable {
                     await jobState.setLabel(jobLabel)
                     await jobState.loop()
                 }
+                .onAppear {
+                    Task {
+                        NSWindow.allowsAutomaticWindowTabbing = false
+                    }
+                }
         }
         .commands {
             CommandGroup(replacing: .saveItem) {
                 Button("Save", action: save)
                     .keyboardShortcut("s")
             }
+            CommandGroup(replacing: .newItem) {}
         }
 
         Settings {
