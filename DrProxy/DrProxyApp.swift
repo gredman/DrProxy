@@ -46,6 +46,7 @@ struct DrProxyApp: App, Sendable {
     private func save() {
         Task {
             await loader.save()
+            await jobState.restart()
         }
     }
 }
