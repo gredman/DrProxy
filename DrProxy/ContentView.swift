@@ -37,7 +37,7 @@ struct ContentView: View, Sendable {
         .toolbar(content: toolbar)
         .navigationSubtitle(subtitle)
         .padding()
-        .frame(minHeight: 200)
+        .frame(minWidth: 600, minHeight: 200)
         .alert(presentedError?.error.localizedDescription ?? "Error", isPresented: $presentedError.hasValueBinding, actions: {}, message: {
             if let error = presentedError?.error {
                 ErrorView(error: error)
