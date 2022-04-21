@@ -45,6 +45,12 @@ private extension NSError {
             NSLocalizedDescriptionKey: description
         ])
     }
+
+    static func processError(label: String) -> NSError {
+        return NSError(domain: "computer.gareth.DrProxy.LaunchService", code: -1, userInfo: [
+            NSLocalizedDescriptionKey: "job \"\(label)\" does not seem to be running"
+        ])
+    }
 }
 
 class LaunchService: NSObject, LaunchServiceProtocol {
@@ -96,8 +102,11 @@ class LaunchService: NSObject, LaunchServiceProtocol {
             let string = String(line[Range(match.range(at: 1), in: line)!])
             pid = Int(string) ?? pid
         }
-        // TODO: check pid
-        return .success(pid)
+        if pid < 0 {
+            return .failure(.processError(label: label))
+        } else {
+            return .success(pid)
+        }
     }
 
     private func stop(label: String) -> NSError? {
