@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F11F49D2824C8EA00EF88A4 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F11F49C2824C8EA00EF88A4 /* Actions.swift */; };
 		7FE89C8B27BDB56D000988A0 /* Foundation+Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE89C8A27BDB56D000988A0 /* Foundation+Sendable.swift */; };
 		B41BCAFC2750628A001A69CD /* ConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCAFB2750628A001A69CD /* ConfigFile.swift */; };
 		B41BCAFE27506E1C001A69CD /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */; };
@@ -87,6 +88,7 @@
 		7F09DA7E27912F4700D7F739 /* HashService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HashService.xcconfig; sourceTree = "<group>"; };
 		7F09DA7F27912FA600D7F739 /* LaunchService.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LaunchService.xcconfig; sourceTree = "<group>"; };
 		7F09DA83279133CD00D7F739 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7F11F49C2824C8EA00EF88A4 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		7FE89C8A27BDB56D000988A0 /* Foundation+Sendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Sendable.swift"; sourceTree = "<group>"; };
 		B41BCAFB2750628A001A69CD /* ConfigFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFile.swift; sourceTree = "<group>"; };
 		B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		B45AE30727504819006BCD00 /* DrProxy */ = {
 			isa = PBXGroup;
 			children = (
+				7F11F49C2824C8EA00EF88A4 /* Actions.swift */,
 				B45AE3172750493B006BCD00 /* AppStorage.swift */,
 				B45AE30C2750481B006BCD00 /* Assets.xcassets */,
 				B41BCAFD27506E1C001A69CD /* ChangePasswordView.swift */,
@@ -430,6 +433,7 @@
 				7FE89C8B27BDB56D000988A0 /* Foundation+Sendable.swift in Sources */,
 				B41BCB2D275418AF001A69CD /* ConfigLoader.swift in Sources */,
 				B45AE30927504819006BCD00 /* DrProxyApp.swift in Sources */,
+				7F11F49D2824C8EA00EF88A4 /* Actions.swift in Sources */,
 				B4A675682754817800C8C414 /* ErrorView.swift in Sources */,
 				B4D90E9F2762DC40003DC56C /* JobState.swift in Sources */,
 			);

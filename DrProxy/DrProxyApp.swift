@@ -20,7 +20,7 @@ struct DrProxyApp: App, Sendable {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(loader: loader, jobState: jobState)
+            ContentView(loader: loader, jobState: jobState, openFileAction: open, saveFileAction: save)
                 .task {
                     await load()
                     await jobState.setLabel(jobLabel)
@@ -33,11 +33,14 @@ struct DrProxyApp: App, Sendable {
                 }
         }
         .commands {
+            CommandGroup(replacing: .newItem) {
+                Button("Open", action: open)
+                    .keyboardShortcut("o")
+            }
             CommandGroup(replacing: .saveItem) {
                 Button("Save", action: save)
                     .keyboardShortcut("s")
             }
-            CommandGroup(replacing: .newItem) {}
         }
 
         Settings {
@@ -47,6 +50,23 @@ struct DrProxyApp: App, Sendable {
 
     private func load() async {
         await loader.load()
+    }
+
+    private func open() {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.directoryURL = URL(fileURLWithPath: AppStorage.configPathDefault)
+
+        let result = panel.runModal()
+
+        guard result == .OK, let url = panel.url else {
+            return
+        }
+
+        Task {
+            await loader.load(path: url.path)
+        }
     }
 
     private func save() {
