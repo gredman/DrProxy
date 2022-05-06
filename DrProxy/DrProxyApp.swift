@@ -40,6 +40,13 @@ struct DrProxyApp: App, Sendable {
             CommandGroup(replacing: .saveItem) {
                 Button("Save", action: save)
                     .keyboardShortcut("s")
+                    .environment(\.isEnabled, loader.isLoaded)
+            }
+            CommandGroup(after: .saveItem) {
+                Section {
+                    Button("Show in Finder", action: showInFinder)
+                        .environment(\.isEnabled, loader.isLoaded)
+                }
             }
         }
 
@@ -74,6 +81,12 @@ struct DrProxyApp: App, Sendable {
             await loader.save()
             await jobState.restart()
         }
+    }
+
+
+    private func showInFinder() {
+        guard let url = loader.presentedItemURL else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([url])
     }
 }
 
