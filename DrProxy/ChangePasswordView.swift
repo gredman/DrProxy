@@ -24,7 +24,7 @@ struct ChangePasswordView: View {
     @State private var error: Error?
 
     var body: some View {
-        VStack {
+        Form {
             TextField("Domain", text: $domain, prompt: Text("network"))
             TextField("Username", text: $username, prompt: Text("dale_cooper"))
             SecureField("Password", text: $password, prompt: Text("password01"))
@@ -34,6 +34,8 @@ struct ChangePasswordView: View {
                     .environment(\.isEnabled, isValid)
             }
         }
+        .padding()
+        .frame(minWidth: 300)
         .onSubmit(updatePassword)
         .onAppear(perform: {
             self.domain = configFile.domain
@@ -44,7 +46,6 @@ struct ChangePasswordView: View {
                 ErrorView(error: error)
             }
         })
-        .padding()
     }
 
     private var isValid: Bool {

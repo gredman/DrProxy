@@ -24,8 +24,11 @@ private extension Binding where Value == IdentifiedError? {
 struct ContentView: View, Sendable {
     @ObservedObject var loader: ConfigLoader
     @ObservedObject var jobState: JobState
+    let openFileAction: OpenFileAction
+    let saveFileAction: SaveFileAction
+    
 
-    @State var presentedError: IdentifiedError?
+    @State private var presentedError: IdentifiedError?
 
     var body: some View {
         ZStack {
@@ -119,27 +122,11 @@ struct ContentView: View, Sendable {
     }
 
     private func open() {
-        let panel = NSOpenPanel()
-        panel.canChooseDirectories = false
-        panel.canChooseFiles = true
-        panel.directoryURL = URL(fileURLWithPath: AppStorage.configPathDefault)
-
-        let result = panel.runModal()
-
-        guard result == .OK, let url = panel.url else {
-            return
-        }
-
-        Task {
-            await loader.load(path: url.path)
-        }
+        openFileAction()
     }
 
     private func save() {
-        Task {
-            await loader.save()
-            await jobState.restart()
-        }
+        saveFileAction()
     }
 
     private func stop() {
