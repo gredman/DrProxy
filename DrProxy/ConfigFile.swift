@@ -25,7 +25,10 @@ struct ConfigFile: Equatable, Sendable {
         }
 
         static func option(name: String, space: String, value: String) -> Line {
-            Line(id: UUID(), content: .option(name: name, space: space, value: value))
+            // ensure we at least have a space if none was given, i.e. if the
+            // option had no value previously
+            let space = space.isEmpty ? " " : space
+            return Line(id: UUID(), content: .option(name: name, space: space, value: value))
         }
 
         var isOption: Bool {
@@ -47,7 +50,7 @@ struct ConfigFile: Equatable, Sendable {
     }
 
     init(string: String) throws {
-        let regex = try! NSRegularExpression(pattern: #"^(\w+)(\s+)(.+)$"#, options: [])
+        let regex = try! NSRegularExpression(pattern: #"^(\w+)(\s*)(.*)$"#, options: [])
         var lines = [Line]()
         string.enumerateLines(invoking: { line, _ in
             let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
